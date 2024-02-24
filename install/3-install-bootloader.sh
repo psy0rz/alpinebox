@@ -13,6 +13,7 @@ fi
 
 echo "ALPINEBOX: Formatting EFI and installing bootloader (legacy and efi mode)"
 
+
 #format and mount
 umount /mnt/boot 2>/dev/null || true
 mkdir -p /mnt/boot 2>/dev/null || true
@@ -20,6 +21,7 @@ mkfs.vfat -n EFI $DISK""2
 mount -t vfat $DISK""2 /mnt/boot
 
 # get zfsbootmenu
+CWD=`pwd`
 cd /tmp
 wget $ZFSBOOTMENU_BIOS -O zfsbootmenu.tar.gz
 wget $ZFSBOOTMENU_EFI -O zfsbootmenu.EFI
@@ -34,7 +36,7 @@ mkdir -p /mnt/boot/syslinux
 
 cp zfsbootmenu-*/* /mnt/boot/syslinux
 cp /usr/share/syslinux/*c32 /mnt/boot/syslinux
-cp syslinux.cfg /mnt/boot/syslinux
+cp $CWD/syslinux.cfg /mnt/boot/syslinux
 extlinux --install /mnt/boot/syslinux
 dd bs=440 count=1 conv=notrunc if=/usr/share/syslinux/gptmbr.bin  of=$DISK
 

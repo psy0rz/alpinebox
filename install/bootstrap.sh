@@ -23,5 +23,5 @@ apk update
 apk add git 
 
 git clone --depth 1 https://github.com/psy0rz/alpinebox.git
-cd alpinebox
+cd alpinebox/install
 ./install.sh $DISK
