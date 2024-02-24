@@ -1,0 +1,7 @@
+#!/bin/bash
+
+VM="alpine zfs root template"
+VBoxManage controlvm "$VM" poweroff
+
+VBoxManage snapshot "$VM" restorecurrent
+VBoxManage startvm "$VM" --type=headless

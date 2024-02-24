@@ -32,5 +32,6 @@ sgdisk -n4:0:0 -t4:BF00 $DISK
 
 sync
 mdev -s
+mkswap $DISK""3
 
 echo "ALPINEBOX: Done, please run install-bootloader.sh next."

@@ -20,6 +20,7 @@ mkfs.vfat -n EFI $DISK""2
 mount -t vfat $DISK""2 /mnt/boot
 
 # get zfsbootmenu
+cd /tmp
 wget $ZFSBOOTMENU_BIOS -O zfsbootmenu.tar.gz
 wget $ZFSBOOTMENU_EFI -O zfsbootmenu.EFI
 tar -xvzf zfsbootmenu.tar.gz
