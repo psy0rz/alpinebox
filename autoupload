@@ -1,0 +1,5 @@
+#!/bin/bash
+
+find .|entr rsync -avx . $1:alpinebox
+
+

@@ -1,0 +1,267 @@
+#!/usr/bin/env ansible-playbook
+
+# In plaats van deze playbook, image hier: 
+# curl https://boot.datux.nl | gunzip > /dev/...
+
+# Connect naar alpine installer iso en voert complete installatie uit voor alpine op ZFS root.
+# Zowel uefi als legacy boot compatible.
+
+# Handmatige stappen alvorns dit playbook te starten:
+# boot van https://dl-cdn.alpinelinux.org/alpine/v3.16/releases/x86_64/alpine-extended-3.16.2-x86_64.iso
+# setup-interfaces -r
+# apk add openssh python3 curl
+# service sshd start
+# mkdir .ssh;  curl -L boot.datux.nl/keys > .ssh/authorized_keys
+
+#Niet vergeten voor hertzner om nvme aan te zetten in https://wiki.alpinelinux.org/wiki/NVME
+
+
+
+
+
+- name: Install alpine on ZFS
+  hosts: alpine_hosts
+  gather_facts: false
+
+  
+  vars:
+
+  tasks:
+    - name: "alpine repos"
+      ansible.builtin.copy:
+        content: |
+          # {{ ansible_managed }} 
+          http://dl-cdn.alpinelinux.org/alpine/{{ alpine_version }}/main
+          http://dl-cdn.alpinelinux.org/alpine/{{ alpine_version }}/community
+        dest: /etc/apk/repositories
+
+
+    - name: Base packages
+      ansible.builtin.package:
+       name:
+        - zfs
+        - sgdisk
+        - e2fsprogs
+        - efibootmgr
+
+    - ansible.builtin.file:
+        state: directory
+        dest: /root/datux
+
+    - name: Partition script
+      ansible.builtin.copy:
+        dest: /root/datux/partition-disk.sh
+        mode: 755
+        
+        content: |
+         #!/bin/sh
+
+         set -e
+
+         echo "Partitioning $1"
+
+         sgdisk --zap-all $1
+
+         # 1: legacy bios boot mode partition 
+         # (will not be formatted but used by extlinux)
+         sgdisk -a1 -n1:24K:+1000K -t1:EF02 $1
+
+         # 2: EFI partition (minimum=100M)
+         sgdisk -n2:1M:+100M -t2:EF00 $1
+
+         #enable legacy boot via bios mode as well:
+         sgdisk -A 2:set:2 $1
+
+
+         # 3: swap
+         sgdisk -n3:0:+{{ swap_size|default("1G") }} -t3:8200 $1
+
+         # 4: zpool
+         sgdisk -n4:0:0 -t4:BF00 $1
+
+         sync
+         mdev -s
+
+         SWAP_PART=$1""3
+         mkswap $SWAP_PART
+         grep $SWAP_PART /etc/fstab || echo -e "$SWAP_PART none swap sw 0 0" >> /etc/fstab
+
+         echo "Done, please run install-bootloader.sh next."
+
+    - name: Parition disk
+      shell: /root/datux/partition-disk.sh {{ disks[0] }}
+
+    - name: zfs hostid
+      shell: zgenhostid -f
+
+    # -O encryption=aes-256-gcm -O keylocation=prompt -O keyformat=passphrase \
+    - name: Create rpool
+      shell: |
+        set -e
+        modprobe zfs
+        zpool create \
+          -f \ 
+          -o ashift=12 \
+          -o autotrim=on \
+          -O mountpoint=none \
+          -O acltype=posixacl \
+          -O compression=on \
+          -O dnodesize=auto \
+          -O normalization=formD \
+          -O relatime=on \
+          -O xattr=sa \
+          rpool {%  for disk in disks  %}{{disk}}4 {% endfor %}
+
+
+        zfs create -o mountpoint=/ -o canmount=noauto rpool/ROOT
+        zpool set bootfs=rpool/ROOT rpool
+        
+        zpool export rpool
+        zpool import -N -R /mnt rpool 
+        zfs mount rpool/ROOT
+
+
+
+    # - name: zfs bpool
+    #   ansible.builtin.shell: |
+    #     set -e
+    #     modprobe zfs
+    #     sleep 3
+    #     zpool create \
+    #       -f \
+    #      -o feature@extensible_dataset=disabled \
+    #     -o feature@bookmarks=disabled \
+    #     -o feature@filesystem_limits=disabled \
+    #     -o feature@large_blocks=disabled \
+    #     -o feature@large_dnode=disabled \
+    #     -o feature@sha512=disabled \
+    #     -o feature@skein=disabled \
+    #     -o feature@edonr=disabled \
+    #     -o feature@userobj_accounting=disabled \
+    #     -o feature@encryption=disabled \
+    #     -o feature@project_quota=disabled \
+    #     -o feature@obsolete_counts=disabled \
+    #     -o feature@bookmark_v2=disabled \
+    #     -o feature@redaction_bookmarks=disabled \
+    #     -o feature@redacted_datasets=disabled \
+    #     -o feature@bookmark_written=disabled \
+    #     -o feature@livelist=disabled \
+    #     -o feature@zstd_compress=disabled \
+    #     -o feature@zilsaxattr=disabled \
+    #     -o feature@head_errlog=disabled \
+    #     -o feature@blake3=disabled \
+    #     -o feature@vdev_zaps_v2=disabled \
+    #      -O dnodesize=legacy \
+    #       -o ashift=12 \
+    #       -o autotrim=on \
+    #       -O acltype=posixacl \
+    #       -O canmount=on \
+    #       -O compression=lz4 \
+    #       -O devices=off \
+    #       -O normalization=formD \
+    #       -O relatime=on \
+    #       -O xattr=sa \
+    #       -O mountpoint=/boot \
+    #       -R /mnt \
+    #       bpool {%  for disk in disks  %}{{disk}}3 {% endfor %}
+
+
+
+
+    - ansible.builtin.service:
+        name: swap
+        enabled: true
+
+    - name: Enable service
+      ansible.builtin.service:
+        name: zfs-mount
+        enabled: true
+
+    - name: Enable service
+      ansible.builtin.service:
+       name: sshd
+       enabled: true
+
+
+
+    - name: Install
+      shell: |
+       set -e
+       sed -i 's|supported="ext|supported="zfs ext|g' /sbin/setup-disk
+       BOOTLOADER=none setup-disk /mnt 
+       mkdir /mnt/root/.ssh
+
+       #fix fstab
+       sed 's/.*rpool.*//g' -i /mnt/etc/fstab
+       echo -e "{{disks[0]}}4 none swap sw 0 0" >> /mnt/etc/fstab
+
+    - name: Add root ssh keys
+      ansible.posix.authorized_key:
+          user: root
+          state: present
+          key: "{{ item }}"
+          path: /mnt/root/.ssh/authorized_keys
+      loop: "{{ ssh_keys }}"
+
+    # - name: "Grub config"
+    #   ansible.builtin.template:
+    #     src: templates/alpine-zfs-root-grub.cfg
+    #     dest: /root/datux/
+
+    - name: Bootloader installer script
+      copy:
+       mode: 755
+       dest: /root/datux/install-bootloader.sh
+       content: |
+        #!/bin/sh
+        set -ex
+
+        echo "Formatting EFI and installing bootloader (legacy and efi mode)"
+
+        mkfs.vfat -n EFI $1""2
+        mount -t vfat $1""2 /mnt
+
+        # legacy
+        # grub-install --target=i386-pc --boot-directory /mnt/alpine/biosmode $1
+        # cp alpine-zfs-root-grub.cfg /mnt/alpine/biosmode/grub/grub.cfg
+
+        # efi
+        # grub-install --target=x86_64-efi --boot-directory /mnt/alpine/efimode --efi-directory=/mnt --bootloader-id alpine --removable
+        # cp alpine-zfs-root-grub.cfg /mnt/alpine/efimode/grub/grub.cfg
+
+        mkdir -p /mnt/EFI/BOOT/
+        curl -L https://github.com/zbm-dev/zfsbootmenu/releases/download/v2.3.0/zfsbootmenu-release-x86_64-v2.3.0-vmlinuz.EFI > /mnt/EFI/BOOT/BOOTX64.EFI
+
+        umount /mnt
+
+        echo "DONE, please use zpool to attach partitions to  rpool."
+
+
+    - shell: 
+        cmd: ./install-bootloader.sh {{ disks[0] }}
+        chdir: /root/datux
+
+
+    - shell: |
+        cp -r /root/datux /mnt/root/datux
+
+    - copy:
+       dest: /mnt/etc/hostname
+       content: |
+        {{ inventory_hostname }}
+
+    - shell: |
+       zfs snapshot rpool/ROOT@freshinstall
+       
+    
+    - name: Eject cd
+      ansible.builtin.shell: |
+        eject -s /dev/sr0 || true
+
+    # - name: Reboot
+    #   ansible.builtin.reboot:
+
+      
+      
+        
+      
