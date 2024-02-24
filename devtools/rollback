@@ -4,4 +4,5 @@ VM="alpine zfs root template"
 VBoxManage controlvm "$VM" poweroff
 
 VBoxManage snapshot "$VM" restorecurrent
+sleep 1
 VBoxManage startvm "$VM" --type=headless
