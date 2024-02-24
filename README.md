@@ -1,19 +1,60 @@
-** Work in progress - dont look :) **
+# Features
+
+This is an installer for [Alpine linux](https://www.alpinelinux.org/) with ZFS as root filesystem, and [ZFSBootMenu](https://docs.zfsbootmenu.org/) to boot into different environments.
+
+Since installing Alpine with ZFS and ZfsBootmenu needs a whole tutorial with many steps, we've created this easy installer.
+
+* Uses the excellent [ZFS](https://openzfs.org/wiki/Main_Page) filesystem.  
+* [ZFSBootMenu](https://docs.zfsbootmenu.org/) as bootloader, which allows you to rollback in case of failed upgrades.
+* After installing it can boot both in BIOS mode and UEFI mode. 
+* Perfect for running docker.
+
+## Why Alpine Linux?
+
+Alpine is one of the best and cleanest Linux distros out there, for running Docker. Packages like the Linux kernel, ZFS support and Docker are super up to date and stable.
+
+Also upgrading to newer releases is quick and painless, in contrast with other distro's. And since we use snapshots before upgrading, its easy to roll back should there be a problem.
+
+For this reason many of our boxes just auto-upgrade and reboot every week without problems.
 
 
-# Installing via official Alpine installer:
+# Installing via official Alpine installer
 
-## Boot Alpine installer
+## 1. Boot Alpine installer
 
 Get and boot Alpine 3.19: https://dl-cdn.alpinelinux.org/alpine/v3.19/releases/x86_64/alpine-extended-3.19.1-x86_64.iso
 
 Note: Should be the extended edition, since that one has ZFS support.
 
-## Configure network
+## 2. Configure network
 
 Get you network configured with:
 ```
 setup-interfaces -r
 ```
 
-## Run this quick installer
+## 3. Run this quick installer
+
+```
+wget https://boot.datux.nl/install
+sh install /dev/sda
+```
+
+This will partition/format/install and reboot.
+
+# Installing via disk-image
+
+Most VPS providers do not provide an Alpine install ISO.
+
+For this reason we usually use a disk image that we can write to disk from any bootable linux environment. (Usually we use the rescue environment from the VPS provider)
+
+(TODO: Work in progress)
+
+# Install docker with zfs-volume support
+
+(TODO: provide our scripts)
+
+# More info
+
+Based on this excellent tutorial: https://docs.zfsbootmenu.org/en/v2.3.x/guides/alpine/uefi.html
+
