@@ -52,6 +52,10 @@ For this reason we usually use a disk image that we can write to disk from any b
 
 (TODO: Work in progress)
 
+# Adding or replacing a ZFS disk
+
+(TODO: Will be very easy by calling a script as well, that does partitioning/formatting etc )
+
 # Install docker with zfs-volume support
 
 (TODO: provide our scripts)
