@@ -1,4 +1,8 @@
 #!/bin/sh
+
+# This is the initial bootstrap that will git clone the actual installer.
+# Run this from the alpine installer ISO.
+
 set -e
 
 DISK=$1

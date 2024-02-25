@@ -1,16 +1,9 @@
 #!/bin/sh
 set -e
 
-DISK=$1
-if ! [ "$DISK" ]; then
-    echo "Usage: $0 <disk>"
-    echo "Creates zpool on disk. (that is already prepared with partition-disk.sh)"
 
-    echo "Will WIPE existing DATA!"
-    exit 1
-fi
 
-echo "ALPINEBOX: Creating zpool on $DISK"
+echo "ALPINEBOX: Creating zpool on $INSTALL_DISK"
 
 zgenhostid -f
 
@@ -26,7 +19,7 @@ zpool create \
     -O relatime=on \
     -O xattr=sa \
     -R /mnt/newroot \
-    rpool $DISK""4
+    rpool $INSTALL_SWAP_DEV
 
 zfs create -o mountpoint=/ -o canmount=noauto rpool/ROOT
 zpool set bootfs=rpool/ROOT rpool

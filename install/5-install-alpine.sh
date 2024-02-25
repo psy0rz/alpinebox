@@ -2,14 +2,6 @@
 
 set -e
 
-DISK=$1
-if ! [ "$DISK" ]; then
-    echo "Usage: $0 <disk>"
-    echo "Installs alpine in rpool and configures fstab for swap and minimal services"
-    exit 1
-fi
-
-
 echo "ALPINEBOX: Installing alpine in /mnt/newroot"
 
 mkdir -p /mnt/newroot/etc/apk
@@ -21,6 +13,7 @@ apk --allow-untrusted -U --root /mnt/newroot --initdb add \
     linux-lts\
     openssh-server\
     chrony\
+    acpid\
     zfs
 
 
@@ -43,15 +36,20 @@ chroot /mnt/newroot rc-update add networking  boot
 chroot /mnt/newroot rc-update add hostname boot
 chroot /mnt/newroot rc-update add sshd default
 chroot /mnt/newroot rc-update add swap default
+chroot /mnt/newroot rc-update add acpid default
 # chroot /mnt/newroot rc-update add zfs-mount default
 # chroot /mnt/newroot rc-update add zfs-import default
 
 # fstab
-SWAPDEV=$DISK""3
+SWAPDEV=$INSTALL_SWAP_DEV
 cat > /mnt/newroot/etc/fstab <<EOF
 tmpfs	/tmp	tmpfs	nosuid,nodev	0	0
 $SWAPDEV none swap sw 0 0
 EOF
+
+#this automaticly unmounts all the bindmounts as well
+umount -l /mnt/newroot
+zpool export rpool
 
 eject -s /dev/sr0 || true
 
