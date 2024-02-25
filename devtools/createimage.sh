@@ -32,6 +32,7 @@ cd ../install
 
 echo "ALPINEBOX: Compressing image..."
 losetup -d /dev/loop0 
+rm $IMAGE"".gz &>/dev/null || true
 gzip $IMAGE
 
 echo "ALPINEBOX: Done, $IMAGE"".gz created."
