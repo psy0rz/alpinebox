@@ -27,6 +27,8 @@ cd ../install
 ./3-install-bootloader.sh 
 ./4-create-zpool.sh 
 ./5-install-alpine.sh 
+./6-install-extras.sh 
+./7-cleanup.sh
 
 echo "ALPINEBOX: Compressing image..."
 losetup -d /dev/loop0 

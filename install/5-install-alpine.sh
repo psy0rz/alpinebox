@@ -12,6 +12,7 @@ apk --allow-untrusted -U --root /mnt/newroot --initdb add \
     linux-firmware-none\
     linux-lts\
     openssh-server\
+    openssh-client\
     chrony\
     acpid\
     zfs
@@ -46,12 +47,6 @@ cat > /mnt/newroot/etc/fstab <<EOF
 tmpfs	/tmp	tmpfs	nosuid,nodev	0	0
 $SWAPDEV none swap sw 0 0
 EOF
-
-#this automaticly unmounts all the bindmounts as well
-umount -l /mnt/newroot
-zpool export $INSTALL_ZPOOL
-
-eject -s /dev/sr0 || true
 
 echo "ALPINEBOX: done"
 
