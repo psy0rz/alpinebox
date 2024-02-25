@@ -8,6 +8,7 @@ Since installing Alpine with ZFS and ZfsBootmenu needs a whole tutorial with man
 * [ZFSBootMenu](https://docs.zfsbootmenu.org/) as bootloader, which allows you to rollback in case of failed upgrades.
 * After installing it can boot both in BIOS mode and UEFI mode. 
 * Perfect for running docker.
+* Also easy to install at VPS providers that do not provide an Alpine installer.
 
 ## Why Alpine Linux?
 
