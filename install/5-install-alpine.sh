@@ -49,7 +49,7 @@ EOF
 
 #this automaticly unmounts all the bindmounts as well
 umount -l /mnt/newroot
-zpool export rpool
+zpool export $INSTALL_ZPOOL
 
 eject -s /dev/sr0 || true
 

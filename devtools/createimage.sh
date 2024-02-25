@@ -18,7 +18,7 @@ export INSTALL_DISK=/dev/loop0
 export INSTALL_EFI_DEV=$INSTALL_DISK""p2
 export INSTALL_SWAP_DEV=$INSTALL_DISK""p3
 export INSTALL_ZPOOL_DEV=$INSTALL_DISK""p4
-export INSTALL_POOL=${INSTALL_RPOOL:-rpool}
+export INSTALL_ZPOOL=${INSTALL_ZPOOL:-rpool}
 
 
 cd ../install

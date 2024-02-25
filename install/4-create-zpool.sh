@@ -19,13 +19,13 @@ zpool create \
     -O relatime=on \
     -O xattr=sa \
     -R /mnt/newroot \
-    rpool $INSTALL_SWAP_DEV
+    $INSTALL_ZPOOL $INSTALL_ZPOOL_DEV
 
-zfs create -o mountpoint=/ -o canmount=noauto rpool/ROOT
-zpool set bootfs=rpool/ROOT rpool
+zfs create -o mountpoint=/ -o canmount=noauto $INSTALL_ZPOOL/ROOT
+zpool set bootfs=$INSTALL_ZPOOL/ROOT $INSTALL_ZPOOL
 
-# zpool export rpool
-# zpool import -N -R /mnt rpool
-zfs mount rpool/ROOT
+# zpool export $INSTALL_ZPOOL
+# zpool import -N -R /mnt $INSTALL_ZPOOL
+zfs mount $INSTALL_ZPOOL/ROOT
 
-echo "ALPINEBOX: Done, rpool mounted under /mnt/newroot"
+echo "ALPINEBOX: Done, $INSTALL_ZPOOL mounted under /mnt/newroot"

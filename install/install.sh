@@ -14,7 +14,7 @@ export INSTALL_DISK=$DISK
 export INSTALL_EFI_DEV=$DISK""2
 export INSTALL_SWAP_DEV=$DISK""3
 export INSTALL_ZPOOL_DEV=$DISK""4
-export INSTALL_POOL=${INSTALL_RPOOL:-rpool}
+export INSTALL_ZPOOL=${INSTALL_ZPOOL:-rpool}
 
 
 ./1-prepare.sh
