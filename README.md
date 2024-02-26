@@ -68,6 +68,16 @@ So that if the first disk completely fails, you can still boot from this one.
 
 Make sure you remove any non-ONLINE disks from the pool first.
 
+## Backups
+
+To make backups via ZFS replication, check out my other project: https://pypi.org/project/zfs-autobackup/
+
+## Safe updates
+
+Now everytime you need to do a bunch of Alpine upgrade, just run something like: `zfs snapshot rpool/ROOT@upgrades1`
+
+If the upgrade fails you can rollback via the ZfsBootmenu.
+
 # Installing via official Alpine installer
 
 If you dont like the imaging method above, you can also use the official Alpine ISO and our install scripts:
