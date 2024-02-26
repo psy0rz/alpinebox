@@ -1,7 +1,7 @@
 #!/bin/sh
 
-# This is the initial bootstrap that will git clone the actual installer.
 # Run this from the alpine installer ISO.
+# This is the initial bootstrap that will git clone the actual installer.
 # Use https://boot.datux.nl/install as a short url to get it.
 
 set -e

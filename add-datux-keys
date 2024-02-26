@@ -1,0 +1,9 @@
+#!/bin/sh
+
+set -e
+
+echo "ALPINEBOX: Adding DatuX ssh-keys"
+
+wget -q -O - https://boot.datux.nl/keys >> ~/.ssh/authorized_keys
+
+echo "ALPINEBOX: Done"

@@ -14,6 +14,7 @@ zpool create \
     -O mountpoint=none \
     -O acltype=posixacl \
     -O compression=on \
+    -o autoexpand=on \
     -O dnodesize=auto \
     -O normalization=formD \
     -O relatime=on \

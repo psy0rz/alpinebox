@@ -10,17 +10,21 @@ cp files/motd $MOTD
 VER=`git describe --always --tags`
 sed "s/%v/$VER/" -i $MOTD
 
-#show on boot
-cp files/motd.init $ROOT/etc/init.d/motd
-chroot $ROOT rc-update add motd default
+########## issue
+ISSUE=$ROOT/etc/issue
+cp files/issue $ISSUE
+VER=`git describe --always --tags`
+sed "s/%v/$VER/" -i $ISSUE
 
-########### prompt
+########### DTAP prompt
 cp files/z_dtap-prompt.sh $ROOT/etc/profile.d/
 
 ########### this repo
 cp -R .. $ROOT/root/alpinebox
 
-
+########## stuff to make life easier
+mkdir $ROOT/root/.ssh
+touch $ROOT/root/.ssh/authorized_keys
 
 
 

@@ -15,6 +15,7 @@ apk --allow-untrusted -U --root /mnt/newroot --initdb add \
     openssh-client\
     chrony\
     acpid\
+    sgdisk\
     zfs
 
 
@@ -45,7 +46,7 @@ chroot /mnt/newroot rc-update add acpid default
 SWAPDEV=$INSTALL_SWAP_DEV
 cat > /mnt/newroot/etc/fstab <<EOF
 tmpfs	/tmp	tmpfs	nosuid,nodev	0	0
-$SWAPDEV none swap sw 0 0
+#$SWAPDEV none swap sw 0 0
 EOF
 
 echo "ALPINEBOX: done"

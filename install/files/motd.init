@@ -1,4 +1,0 @@
-#!/sbin/openrc-run
-start (){
-  cat /etc/motd
-}
