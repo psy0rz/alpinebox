@@ -1,5 +1,5 @@
 #!/bin/bash
 
-find .|entr rsync -rvx . $1:alpinebox
+find .|entr rsync -prvx . $1:alpinebox
 
 

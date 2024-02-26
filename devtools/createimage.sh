@@ -7,14 +7,14 @@ IMAGE_SIZE=3G
 IMAGE=/tmp/alpine.img
 
 #cleanup old stuff
-losetup -d /dev/loop0 &>/dev/null || true
+losetup -d /dev/loop1 &>/dev/null || true
 rm $IMAGE &>/dev/null || true
 
 #prepare image
 truncate -s $IMAGE_SIZE $IMAGE
-losetup -P /dev/loop0 $IMAGE
+losetup -P /dev/loop1 $IMAGE
 
-export INSTALL_DISK=/dev/loop0
+export INSTALL_DISK=/dev/loop1
 export INSTALL_EFI_DEV=$INSTALL_DISK""p2
 export INSTALL_SWAP_DEV=$INSTALL_DISK""p3
 export INSTALL_ZPOOL_DEV=$INSTALL_DISK""p4
@@ -31,7 +31,7 @@ cd ../install
 ./7-cleanup.sh
 
 echo "ALPINEBOX: Compressing image..."
-losetup -d /dev/loop0 
+losetup -d /dev/loop1 
 rm $IMAGE"".gz &>/dev/null || true
 gzip $IMAGE
 
