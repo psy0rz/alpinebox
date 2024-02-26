@@ -5,6 +5,7 @@ DISK=$1
 if ! [ "$DISK" ]; then
     echo "Usage: $0 <disk>"
     echo "Will install Alpine Box on your system."
+    echo "Run this from a Alpine installer ISO!"
 
     echo "Will WIPE existing DATA!"
     exit 1
