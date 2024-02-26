@@ -52,6 +52,8 @@ Since it's an image, you will need to grow the partition and zfs disk:
 
 Just run `grow-disks` script in /root/alpinebox, and it should be handled automaticly without a reboot even.
 
+### Warning
+
 **Do this as soon as possible, since it sometimes fails and bricks your system.** ( You can probably recover by restoring the partition table. )
 
 This happens if you have older zfs data in the unused space. If you encounter this, just zero your whole disk and try again: `dd if=/dev/zero of=/dev/sda bs=1M`
