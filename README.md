@@ -63,7 +63,7 @@ This happens if you have older zfs data in the unused space. If you encounter th
 
 To add a disk to the zpool as a mirror, just run the `add-disk` script in /root/alpinebox 
 
-This will also make sure that the disk has the correction partitioning, MBR/UEIF and ZfsBootmenu stuff. 
+This will also make sure that the disk has the correction partitioning, MBR/UEFI and ZfsBootmenu stuff. 
 So that if the first disk completely fails, you can still boot from this one.
 
 Make sure you remove any non-ONLINE disks from the pool first.
