@@ -27,6 +27,9 @@ For this reason all our boxes run Alpine and just auto-upgrade and reboot every 
 
 Installation by just writing the official image to the disk is the easiest way:
 
+![image](https://github.com/psy0rz/alpinebox/assets/1179017/b3553522-8305-4cc2-86c2-6b86fd8ff61e)
+
+
 * Boot any Linux distro via CD, USB. Or use a rescue-boot if you use some kind of VPS hosting provider.
 * Download the imager:
 ```
