@@ -41,12 +41,15 @@ This should download and reboot, and you're basically done :)
 ![image](https://github.com/psy0rz/alpinebox/assets/1179017/b3553522-8305-4cc2-86c2-6b86fd8ff61e)
 
 
+## Growing the disk
 
+Since it's an image, you will need to grow the partition and zfs disk.
 
-
-
+Just run `grow-disks` script in /root/alpinebox, and it should be handled automaticly without a reboot even.
 
 # Installing via official Alpine installer
+
+If you dont like the imaging method, you can also use the official Alpine ISO and our install scripts:
 
 ## 1. Boot Alpine installer
 
@@ -70,13 +73,13 @@ sh install /dev/sda
 
 This will partition/format/install and reboot.
 
-# Installing via disk-image
 
-Most VPS providers do not provide an Alpine install ISO.
+# Creating you own image
 
-For this reason we usually use a disk image that we can write to disk from any bootable linux environment. (Usually we use the rescue environment from the VPS provider)
+Look in the devtools directory. With `createimage.sh` you can create your own image.
+Run it from an Alpine ISO or installation. 
+You might need to install some dependencies first if something fails.
 
-(TODO: Work in progress)
 
 # Adding or replacing a ZFS disk
 
