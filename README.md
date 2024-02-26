@@ -15,9 +15,9 @@ Since installing Alpine with ZFS and ZfsBootmenu needs a whole tutorial with man
 
 ## Why Alpine Linux?
 
-Alpine is one of the best and cleanest Linux distros out there, for running Docker. Packages like the Linux kernel, ZFS support and Docker are very up to date but also very stable. 
+Alpine is one of the best and cleanest Linux distros out there, for running Docker and various other stuff. Packages like the Linux kernel, ZFS support and Docker are very up to date but also very stable. 
 
-Its super small, fast and simple.
+Its super small, fast and simple. Its not the most versatile distribution, but what it does, it does very well.
 
 Also upgrading to newer releases is quick and painless, in contrast with other distro's. And since we use snapshots before upgrading, its easy to roll back should there be a problem.
 
