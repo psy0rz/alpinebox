@@ -16,6 +16,7 @@ apk --allow-untrusted -U --root /mnt/newroot --initdb add \
     chrony\
     acpid\
     sgdisk\
+    partx\
     zfs
 
 

@@ -5,9 +5,26 @@ set -e
 echo "ALPINEBOX: Growing disks to use all available space"
 ZPOOL_DEVS=`zpool list -P -L -H -v rpool|grep -v rpool|cut -f2`
 
+zpool set autoexpand=on rpool
+
 for ZPOOL_DEV in $ZPOOL_DEVS; do
     DISK=`echo $ZPOOL_DEV | sed 's/p*[0-9]$//'`
-    echo "Repartitioning disk $DISK"
-    sgdisk -d4 -n4:0:0 -t4:BF00 $DISK
+    echo "ALPINEBOX: Repartitioning disk $DISK"
+
+    #sometimes the whole disk has an old label that confuses zfs after growing:
+    zpool labelclear -f $DISK &>/dev/null || true
+    zpool set autoexpand=on rpool  
+
+    sgdisk -d4 $DISK  || true
+    sgdisk -n4:0:0 -t4:BF00 $DISK
+    
+    partx -u $DISK 
+
+    zpool online rpool -e $ZPOOL_DEV || true
 
 done
+
+echo "ALPINEBOX: Result:"
+zfs list rpool
+
+echo "ALPINEBOX: Done"
