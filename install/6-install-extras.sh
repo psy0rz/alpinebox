@@ -21,6 +21,7 @@ cp files/z_dtap-prompt.sh $ROOT/etc/profile.d/
 
 ########### this repo
 cp -R .. $ROOT/root/alpinebox
+chown -R root:root $ROOT/root/alpinebox
 
 ########## stuff to make life easier
 mkdir $ROOT/root/.ssh
