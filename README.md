@@ -52,15 +52,35 @@ Since it's an image, you will need to grow the partition and zfs disk:
 
 Just run `grow-disks` script in /root/alpinebox, and it should be handled automaticly without a reboot even.
 
+
 ### Warning
 
 **Do this as soon as possible, since it sometimes fails and bricks your system.** ( You can probably recover by restoring the partition table. )
 
 This happens if you have older zfs data in the unused space. If you encounter this, just zero your whole disk and try again: `dd if=/dev/zero of=/dev/sda bs=1M`
 
+## Adding a disk
+
+To add a disk to the zpool as a mirror, just run the `add-disk` script in /root/alpinebox 
+
+This will also make sure that the disk has the correction partitioning, MBR/UEIF and ZfsBootmenu stuff. 
+So that if the first disk completely fails, you can still boot from this one.
+
+Make sure you remove any non-ONLINE disks from the pool first.
+
+## Backups
+
+To make backups via ZFS replication, check out my other project: https://pypi.org/project/zfs-autobackup/
+
+## Safe updates
+
+Now everytime you need to do a bunch of Alpine upgrade, just run something like: `zfs snapshot rpool/ROOT@upgrades1`
+
+If the upgrade fails you can rollback via the ZfsBootmenu.
+
 # Installing via official Alpine installer
 
-If you dont like the imaging method, you can also use the official Alpine ISO and our install scripts:
+If you dont like the imaging method above, you can also use the official Alpine ISO and our install scripts:
 
 ## 1. Boot Alpine installer
 
@@ -91,10 +111,6 @@ Look in the devtools directory. With `createimage.sh` you can create your own im
 Run it from an Alpine ISO or installation. 
 You might need to install some dependencies first if something fails.
 
-
-# Adding or replacing a ZFS disk
-
-(TODO: Will be very easy by calling a script as well, that does partitioning/formatting etc )
 
 # Install docker with zfs-volume support
 
