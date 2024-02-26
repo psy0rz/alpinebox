@@ -9,6 +9,7 @@ Since installing Alpine with ZFS and ZfsBootmenu needs a whole tutorial with man
 * After installing it can boot both in BIOS mode and UEFI mode. 
 * Perfect for running docker.
 * Also easy to install at VPS providers that do not provide an Alpine installer.
+* Install time is about 1 minute.
 
 ![image](https://github.com/psy0rz/alpinebox/assets/1179017/fc9fb0a9-d88f-4943-814f-9f39d1be11a0)
 
