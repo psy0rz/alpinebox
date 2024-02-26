@@ -47,9 +47,14 @@ For an example of this see `/root/alpinebox/add-datux-keys`, which we ourself al
 
 ## Growing the disk
 
-Since it's an image, you will need to grow the partition and zfs disk.
+Since it's an image, you will need to grow the partition and zfs disk:
+![image](https://github.com/psy0rz/alpinebox/assets/1179017/7aced4e6-bc15-4be0-803c-69f5717f04af)
 
 Just run `grow-disks` script in /root/alpinebox, and it should be handled automaticly without a reboot even.
+
+**Do this as soon as possible, since it sometimes fails and bricks your system.** ( You can probably recover by restoring the partition table. )
+
+This happens if you have older zfs data in the unused space. If you encounter this, just zero your whole disk and try again: `dd if=/dev/zero of=/dev/sda bs=1M`
 
 # Installing via official Alpine installer
 
