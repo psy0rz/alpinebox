@@ -3,7 +3,7 @@
 set -e 
 
 echo "ALPINEBOX: Growing disks to use all available space"
-ZPOOL_DEVS=`zpool list -P -L -H -v rpool|grep -v rpool|cut -f2`
+ZPOOL_DEVS=`zpool list -P -L -H -v rpool|grep -v rpool|cut -f2|grep /`
 
 #needs to be on, even tough its not going to be automatic.
 zpool set autoexpand=on rpool

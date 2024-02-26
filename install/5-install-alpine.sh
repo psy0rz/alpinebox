@@ -15,9 +15,11 @@ apk --allow-untrusted -U --root /mnt/newroot --initdb add \
     openssh-client\
     chrony\
     acpid\
+    syslinux\
     sgdisk\
     partx\
-    zfs
+    mount\
+    zfs\
 
 
 cp /etc/hostid /mnt/newroot/etc
@@ -40,6 +42,8 @@ chroot /mnt/newroot rc-update add hostname boot
 chroot /mnt/newroot rc-update add sshd default
 chroot /mnt/newroot rc-update add swap default
 chroot /mnt/newroot rc-update add acpid default
+chroot /mnt/newroot rc-update add crond default
+chroot /mnt/newroot rc-update add syslog default
 # chroot /mnt/newroot rc-update add zfs-mount default
 # chroot /mnt/newroot rc-update add zfs-import default
 
