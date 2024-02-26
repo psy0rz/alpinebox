@@ -22,6 +22,7 @@ sgdisk -n3:0:+${SWAP_SIZE:-1G} -t3:8200 $INSTALL_DISK
 # 4: zpool
 sgdisk -n4:0:0 -t4:BF00 $INSTALL_DISK
 
+partx -u $INSTALL_DISK
 sync
 mdev -s
 mkswap $INSTALL_SWAP_DEV

@@ -33,3 +33,6 @@ curl -L \
   -H "Content-Type: application/octet-stream" \
   "https://uploads.github.com/repos/psy0rz/alpinebox/releases/$ID/assets?name=alpine.img.gz" \
   --data-binary "@/tmp/alpine.img.gz"
+
+echo
+echo "DONE"
