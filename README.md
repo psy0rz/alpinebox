@@ -39,6 +39,8 @@ Installation by just writing the official image to the disk is the easiest way.
 ```
 This should download and reboot, and you're basically done :)
 
+Example of installation on a Hetzner VPS:
+
 ![image](https://github.com/psy0rz/alpinebox/assets/1179017/b3553522-8305-4cc2-86c2-6b86fd8ff61e)
 
 ## Login
