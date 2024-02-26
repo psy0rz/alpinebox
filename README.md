@@ -40,6 +40,10 @@ This should download and reboot, and you're basically done :)
 
 ![image](https://github.com/psy0rz/alpinebox/assets/1179017/b3553522-8305-4cc2-86c2-6b86fd8ff61e)
 
+## Login
+
+There is no root-password for console logins. However, for ssh you will need to add your keys. 
+For an example of this see `/root/alpinebox/add-datux-keys`, which we ourself always use.
 
 ## Growing the disk
 
