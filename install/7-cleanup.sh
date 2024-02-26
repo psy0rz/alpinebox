@@ -6,5 +6,7 @@ set -e
 
 #this automaticly unmounts all the bindmounts as well
 umount -l /mnt/newroot
+
+zfs snapshot $INSTALL_ZPOOL/ROOT@fresh-install
 zpool export $INSTALL_ZPOOL
 
