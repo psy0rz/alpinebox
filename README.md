@@ -23,6 +23,19 @@ Also upgrading to newer releases is quick and painless, in contrast with other d
 
 For this reason all our boxes run Alpine and just auto-upgrade and reboot every week without problems.
 
+# Installing 
+
+Installation by just writing the official image to the disk is the easiest way:
+
+* Boot any Linux distro via CD, USB. Or use a rescue-boot if you use some kind of VPS hosting provider.
+* Download the imager:
+```
+wget https://boot.datux.nl/image
+```
+
+
+
+
 
 # Installing via official Alpine installer
 
