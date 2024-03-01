@@ -58,9 +58,10 @@ Just run `grow-disks` script in /root/alpinebox, and it should be handled automa
 
 ### Warning
 
-**Do this as soon as possible, since it sometimes fails and bricks your system.** ( You can probably recover by restoring the partition table. )
+NOTE: Do a git pull to get the latest version of this script which fixes an issue.
 
-This happens if you have older zfs data in the unused space. If you encounter this, just zero your whole disk and try again: `dd if=/dev/zero of=/dev/sda bs=1M`
+**Do this as soon as possible, since its a somewhat risky operation** 
+
 
 ## Adding a disk
 
