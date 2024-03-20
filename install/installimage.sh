@@ -1,10 +1,13 @@
 #!/bin/sh
 
 DISK=$1
-URL=https://github.com/psy0rz/alpinebox/releases/latest/download/alpine.img.gz
+RELEASE=${2:-latest}
+
+URL=https://github.com/psy0rz/alpinebox/releases/$RELEASE/download/alpine.img.gz
+
 
 if ! [ "$DISK" ]; then
-    echo "Usage: $0 <disk>"
+    echo "Usage: $0 <disk> [release]"
     echo "Will install Alpine Box on your system from a image."
     echo "You should be able to run this from any Linux distro or environment."
 
