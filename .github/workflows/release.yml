@@ -21,7 +21,7 @@ jobs:
         sudo ./build.sh
 
     - name: Upload Release Asset
-      uses: actions/upload-release-asset@v2
+      uses: actions/upload-release-asset@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
