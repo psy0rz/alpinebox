@@ -1,9 +1,10 @@
 name: Run Script in Alpine VM
 
 on:
-  push:
-    branches:
-      - master
+  
+  release:
+    types:
+      - created
 
 jobs:
   build:
@@ -13,13 +14,18 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    # - name: Set up Docker
-    #   run: |
-    #       sudo apt-get update
-    #       sudo apt-get install -y docker.io
-
     - name: Build
       run: |
         cd devtools/docker
         chmod +x ./build.sh
         sudo ./build.sh
+
+    - name: Upload Release Asset
+      uses: actions/upload-release-asset@v2
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ github.event.release.upload_url }} # This is the upload URL for the release assets
+        asset_path: /tmp/alpine.img.gz
+        asset_name: alpine.img.gz
+        asset_content_type: application/gzip
