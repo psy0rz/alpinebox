@@ -33,6 +33,8 @@ Installation by just writing the official image to the disk is the easiest way.
 ```
 # wget https://boot.datux.nl/image
 ```
+NOTE: This is just a redirect to https://raw.githubusercontent.com/psy0rz/alpinebox/master/install/installimage.sh
+
 * Start the imager and specify your harddisk:
 ```
 # sh image /dev/sda
