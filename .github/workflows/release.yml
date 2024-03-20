@@ -20,6 +20,7 @@ jobs:
 
     - name: Build
       run: |
+        mount
         cd devtools/docker
-        chmod +x ./createimage.sh
-        ./createimage.sh
+        chmod +x ./build.sh
+        ./build.sh
