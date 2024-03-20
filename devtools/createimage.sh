@@ -2,23 +2,27 @@
 
 set -e
 
-
 IMAGE_SIZE=3G
 IMAGE=/tmp/alpine.img
 
+#requirements
+apk add zfs losetup git
+
 #cleanup old stuff
-losetup -d /dev/loop1 &>/dev/null || true
-rm $IMAGE &>/dev/null || true
+losetup -D
+rm -f $IMAGE 
+
+LOOP_DEV=`losetup -f`
 
 #prepare image
 truncate -s $IMAGE_SIZE $IMAGE
-losetup -P /dev/loop1 $IMAGE
+losetup -P $LOOP_DEV $IMAGE
 
-export INSTALL_DISK=/dev/loop1
+export INSTALL_DISK=$LOOP_DEV
 export INSTALL_EFI_DEV=$INSTALL_DISK""p2
 export INSTALL_SWAP_DEV=$INSTALL_DISK""p3
 export INSTALL_ZPOOL_DEV=$INSTALL_DISK""p4
-export INSTALL_ZPOOL=${INSTALL_ZPOOL:-rpool}
+export INSTALL_ZPOOL=${INSTALL_ZPOOL:-zpool}
 
 
 cd ../install
@@ -31,7 +35,7 @@ cd ../install
 ./7-cleanup.sh
 
 echo "ALPINEBOX: Compressing image..."
-losetup -d /dev/loop1 
+losetup -d $LOOP_DEV 
 rm $IMAGE"".gz &>/dev/null || true
 gzip $IMAGE
 

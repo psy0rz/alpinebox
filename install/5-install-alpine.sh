@@ -24,7 +24,11 @@ apk --allow-untrusted -U --root /mnt/newroot --initdb add \
 
 cp /etc/hostid /mnt/newroot/etc
 cp /etc/resolv.conf /mnt/newroot/etc
-cp /etc/network/interfaces /mnt/newroot/etc/network
+if [[ -e /etc/network/interfaces ]]; then
+    cp /etc/network/interfaces /mnt/newroot/etc/network
+else
+    cp files/interfaces /mnt/newroot/etc/network
+fi
 
 mount --rbind /dev /mnt/newroot/dev
 mount --rbind /sys /mnt/newroot/sys

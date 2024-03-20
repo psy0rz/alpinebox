@@ -5,6 +5,7 @@ echo "ALPINEBOX: installing basic pacakges stuff we need for the rest of the scr
 
 apk add sgdisk zfs syslinux partx
 
-modprobe zfs
+#may fail, in docker
+modprobe zfs || true
 
 echo "ALPINEBOX: done"

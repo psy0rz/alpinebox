@@ -4,6 +4,9 @@ set -e
 
 ROOT=/mnt/newroot
 
+#make git happy
+chown root:root .. ../.git
+
 ########### motd
 MOTD=$ROOT/etc/motd
 cp files/motd $MOTD
