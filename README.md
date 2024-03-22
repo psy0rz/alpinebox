@@ -57,11 +57,6 @@ Since it's an image, you will need to grow the partition and zfs disk:
 
 Just run `grow-disks` script in /root/alpinebox, and it should be handled automaticly without a reboot even.
 
-
-### Warning
-
-NOTE: Do a git pull to get the latest version of this script which fixes an issue.
-
 **Do this as soon as possible, since its a somewhat risky operation** 
 
 
