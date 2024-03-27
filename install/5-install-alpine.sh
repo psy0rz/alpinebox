@@ -48,8 +48,8 @@ chroot /mnt/newroot rc-update add swap default
 chroot /mnt/newroot rc-update add acpid default
 chroot /mnt/newroot rc-update add crond default
 chroot /mnt/newroot rc-update add syslog default
-# chroot /mnt/newroot rc-update add chronyd default
-# chroot /mnt/newroot rc-update add zfs-mount default
+chroot /mnt/newroot rc-update add chronyd default
+chroot /mnt/newroot rc-update add zfs-mount default
 # chroot /mnt/newroot rc-update add zfs-import default
 
 # fstab
