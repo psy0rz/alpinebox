@@ -4,6 +4,7 @@ This is an installer for [Alpine linux](https://www.alpinelinux.org/) with ZFS a
 
 Since installing Alpine with ZFS and ZfsBootmenu needs a whole tutorial with many steps, we've created this easy installer.
 
+* Fastest and easiest way to install Alpine on ZFS 
 * Uses the excellent [ZFS](https://openzfs.org/wiki/Main_Page) filesystem.  
 * [ZFSBootMenu](https://docs.zfsbootmenu.org/) as bootloader, which allows you to rollback in case of failed upgrades.
 * After installing it can boot both in BIOS mode and UEFI mode. 
@@ -26,7 +27,7 @@ For this reason all our boxes run Alpine and just auto-upgrade and reboot every 
 
 # Installing 
 
-Installation by just writing the official image to the disk is the easiest way.
+Installation by just writing the official image to the disk is the easiest way:
 
 * Boot any Linux distro via CD, USB. Or use a rescue-boot if you use some kind of VPS hosting provider. (example image below)
 * Download the imager:
