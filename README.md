@@ -21,7 +21,7 @@ Alpine is one of the best and cleanest Linux distros out there, for running Dock
 
 Its super small, fast and simple. Its not the most versatile distribution, but what it does, it does very well.
 
-Also upgrading to newer releases is quick and painless, in contrast with other distro's. And since we use snapshots before upgrading, its easy to roll back should there be a problem.
+Also upgrading to newer releases is quick and painless, in contrast to other distro's. And since we use snapshots before upgrading, its easy to roll back should there be a problem.
 
 For this reason all our boxes run Alpine and just auto-upgrade and reboot every week without problems.
 
