@@ -51,6 +51,8 @@ Here are some specific VPS provider tips on how to get into an environment to st
 
 Once you've entered the rescue environment, you can use the Alpinebox installer mentioned above.
 
+Note: Some provider require a powercycle or reset, after the installer. (normal reboot doesnt work)
+
 ## Login
 
 There is no root-password for console logins. However, for ssh you will need to add your keys. 
