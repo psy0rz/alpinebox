@@ -44,6 +44,8 @@ This should download and reboot, and you're basically done :)
 
 ## VPS provider tips:
 
+Here are some tips on how to install Alpinebox on various VPS providers:
+
 * Hetzner: Via the Hetzner [console](https://console.hetzner.cloud/) request a Rescue boot. See [this screenshot.](https://github.com/psy0rz/alpinebox/assets/1179017/b3553522-8305-4cc2-86c2-6b86fd8ff61e)
 
 ## Examples
