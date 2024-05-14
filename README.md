@@ -44,11 +44,12 @@ This should download and reboot, and you're basically done :)
 
 ## VPS provider tips:
 
-Here are some tips on how to start the installer on various VPS providers:
+Here are some specific VPS provider tips on how to get into an environment to start the installer:
 
 * Hetzner: Via the Hetzner [console](https://console.hetzner.cloud/) request a Rescue boot. See [this screenshot.](https://github.com/psy0rz/alpinebox/assets/1179017/b3553522-8305-4cc2-86c2-6b86fd8ff61e)
-* TransIP: Via the console screen you can choose to boot linux in Rescue mode. See [this screenshot.](https://github.com/psy0rz/alpinebox/assets/1179017/0be92242-9ba8-4c2b-99ea-ed6add088a9a)
+* TransIP: Open de console screen in popup-mode and choose to boot linux in Rescue mode. See [this screenshot.](https://github.com/psy0rz/alpinebox/assets/1179017/0be92242-9ba8-4c2b-99ea-ed6add088a9a)
 
+Once you've entered the rescue environment, you can use the Alpinebox installer mentioned above.
 
 ## Login
 
