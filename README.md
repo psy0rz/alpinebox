@@ -123,7 +123,7 @@ You might need to install some dependencies first if something fails.
 
 # Install docker with zfs-volume support
 
-(TODO: provide our scripts)
+See https://github.com/csachs/docker-zfs-plugin
 
 # More info
 
