@@ -1,5 +1,7 @@
 #!/bin/sh
 
+#NOTE: this is just an internal helper script we call manually. It will never be called automaticly.
+
 set -e
 
 echo "ALPINEBOX: Adding DatuX ssh-keys"
