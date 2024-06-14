@@ -17,12 +17,7 @@ fi
 
 echo "ALPINEBOX: starting"
 
-ALPINE_RELEASE=v3.19
-
-cat >/etc/apk/repositories <<EOF
-http://dl-cdn.alpinelinux.org/alpine/$ALPINE_RELEASE/main
-http://dl-cdn.alpinelinux.org/alpine/$ALPINE_RELEASE/community
-EOF
+setup-apkrepos -1
 
 apk update
 apk add git 
