@@ -56,7 +56,6 @@ Note: Some provider require a powercycle or reset, after the installer. (normal 
 ## Login
 
 There is no root-password for console logins. However, for ssh you will need to add your keys. 
-For an example of this see `/root/alpinebox/add-datux-keys`, which we ourself always use.
 
 ## Growing the disk
 
