@@ -92,7 +92,7 @@ If you dont like the imaging method above, you can also use the official Alpine 
 
 ## 1. Boot Alpine installer
 
-Get and boot Alpine 3.19: https://dl-cdn.alpinelinux.org/alpine/v3.19/releases/x86_64/alpine-extended-3.19.1-x86_64.iso
+Get and boot a recent Alpine release: https://alpinelinux.org/downloads/
 
 Note: Should be the extended edition, since that one has ZFS support.
 

@@ -34,10 +34,15 @@ cd ../install
 ./6-install-extras.sh 
 ./7-cleanup.sh
 
-echo "ALPINEBOX: Compressing image..."
 losetup -d $LOOP_DEV 
 rm $IMAGE"".gz &>/dev/null || true
-gzip $IMAGE
+if ! [ "$SKIP_COMPRESS" ]; then
+    echo "ALPINEBOX: Compressing image..."
+    gzip -k $IMAGE
+fi
 
-echo "ALPINEBOX: Done, $IMAGE"".gz created."
+#so that runimage.sh works without root
+chmod 666 /tmp/alpine.img
+
+echo "ALPINEBOX: Done, $IMAGE created."
 

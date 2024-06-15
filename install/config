@@ -1,2 +1,4 @@
+ALPINE_RELEASE=3.19
+APPEND="loglevel=4"
 CONFIG_ZFSBOOTMENU_EFI="https://github.com/zbm-dev/zfsbootmenu/releases/download/v2.3.0/zfsbootmenu-release-x86_64-v2.3.0-vmlinuz.EFI"
 CONFIG_ZFSBOOTMENU_BIOS="https://github.com/zbm-dev/zfsbootmenu/releases/download/v2.3.0/zfsbootmenu-recovery-x86_64-v2.3.0.tar.gz"

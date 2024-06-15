@@ -30,11 +30,13 @@ mkdir -p /mnt/boot/EFI/BOOT/
 cp zfsbootmenu.EFI /mnt/boot/EFI/BOOT/BOOTX64.EFI
 
 #BIOS version:
+#We use syslinux to chainboot to zfsbootmenu
 mkdir -p /mnt/boot/syslinux
 
 cp zfsbootmenu-*/* /mnt/boot/syslinux
 cp /usr/share/syslinux/*c32 /mnt/boot/syslinux
 cp $CWD/files/syslinux.cfg /mnt/boot/syslinux
+cp $CWD/files/syslinux.txt /mnt/boot/syslinux
 extlinux --install /mnt/boot/syslinux
 dd bs=440 count=1 conv=notrunc if=/usr/share/syslinux/gptmbr.bin of=$INSTALL_DISK
 

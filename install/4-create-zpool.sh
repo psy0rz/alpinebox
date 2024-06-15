@@ -1,7 +1,7 @@
 #!/bin/sh
 set -e
 
-
+source config
 
 echo "ALPINEBOX: Creating zpool on $INSTALL_DISK"
 
@@ -28,5 +28,9 @@ zpool set bootfs=$INSTALL_ZPOOL/ROOT $INSTALL_ZPOOL
 # zpool export $INSTALL_ZPOOL
 # zpool import -N -R /mnt $INSTALL_ZPOOL
 zfs mount $INSTALL_ZPOOL/ROOT
+
+#set default zfsbootmenu kernel commandline
+zfs set org.zfsbootmenu:commandline="$APPEND" $INSTALL_ZPOOL/ROOT
+
 
 echo "ALPINEBOX: Done, $INSTALL_ZPOOL mounted under /mnt/newroot"
