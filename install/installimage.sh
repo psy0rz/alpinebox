@@ -1,9 +1,17 @@
-#!/bin/sh
+#!/bin/bash
+
+set -e
 
 DISK=$1
 RELEASE=${2:-latest}
 
-URL=https://github.com/psy0rz/alpinebox/releases/$RELEASE/download/alpine.img.gz
+if [ "$RELEASE" == "latest" ]; then
+    echo "ALPINEBOX: Getting latest stable version..."
+    URL="https://github.com/psy0rz/alpinebox/releases/latest/download/alpine.img.gz"
+else
+    echo "ALPINEBOX: Getting release $RELEASE..."
+    URL="https://github.com/psy0rz/alpinebox/releases/download/$RELEASE/alpine.img.gz"
+fi
 
 
 if ! [ "$DISK" ]; then
