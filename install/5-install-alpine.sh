@@ -36,7 +36,7 @@ mount --rbind /proc /mnt/newroot/proc
 
 
 # Blacklist GPUs (issue #3)
-cp files/blacklist-gpu.conf $ROOT/etc/modprobe.d
+cp files/blacklist-gpu.conf /mnt/newroot/etc/modprobe.d
 
 # zfs stuff
 echo "/etc/hostid" >> /mnt/newroot/etc/mkinitfs/features.d/zfshost.files
