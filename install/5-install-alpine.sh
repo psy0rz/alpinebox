@@ -34,9 +34,15 @@ mount --rbind /dev /mnt/newroot/dev
 mount --rbind /sys /mnt/newroot/sys
 mount --rbind /proc /mnt/newroot/proc
 
+
+# Blacklist GPUs (issue #3)
+cp files/blacklist-gpu.conf $ROOT/etc/modprobe.d
+
 # zfs stuff
 echo "/etc/hostid" >> /mnt/newroot/etc/mkinitfs/features.d/zfshost.files
 echo 'features="ata base keymap kms mmc nvme scsi usb virtio zfs zfshost"' > /mnt/newroot/etc/mkinitfs/mkinitfs.conf
+
+# rebuild initfs for above two things
 chroot /mnt/newroot mkinitfs $(ls /mnt/newroot/lib/modules)                
 
 # services
