@@ -30,5 +30,6 @@ chown -R root:root $ROOT/root/alpinebox
 mkdir $ROOT/root/.ssh
 touch $ROOT/root/.ssh/authorized_keys
 
-
+########## Blacklist GPUs (issue #3)
+cp files/blacklist-gpu.conf $ROOT/etc/modprobe.d
 
