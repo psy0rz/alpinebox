@@ -25,7 +25,7 @@ cd install
 
 #add to pool
 ZPOOL_DEV=`zpool list -P -L -H -v $INSTALL_ZPOOL|grep -v $INSTALL_ZPOOL|grep ONLINE|cut -f2|grep /|tail -1`
-zpool attach $INSTALL_ZPOOL $ZPOOL_DEV $INSTALL_ZPOOL_DEV
+zpool attach -f $INSTALL_ZPOOL $ZPOOL_DEV $INSTALL_ZPOOL_DEV
 
 zpool status
 

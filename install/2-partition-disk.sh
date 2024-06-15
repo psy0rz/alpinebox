@@ -24,6 +24,7 @@ sgdisk -n4:0:0 -t4:BF00 $INSTALL_DISK
 
 partx -u $INSTALL_DISK
 sync
+sleep 3
 mdev -s
 mkswap $INSTALL_SWAP_DEV
 
