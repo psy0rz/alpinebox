@@ -9,18 +9,7 @@ cp /etc/apk/repositories /mnt/newroot/etc/apk
 
 apk --allow-untrusted -U --root /mnt/newroot --initdb add \
     alpine-base \
-    linux-firmware-none\
-    linux-lts\
-    openssh-server\
-    openssh-client\
-    chrony\
-    acpid\
-    syslinux\
-    sgdisk\
-    partx\
-    mount\
-    zfs\
-
+    linux-firmware-none linux-lts openssh-server openssh-client chrony acpid syslinux sgdisk partx mount zfs
 
 cp /etc/hostid /mnt/newroot/etc
 cp /etc/resolv.conf /mnt/newroot/etc
@@ -34,20 +23,19 @@ mount --rbind /dev /mnt/newroot/dev
 mount --rbind /sys /mnt/newroot/sys
 mount --rbind /proc /mnt/newroot/proc
 
-
 # Blacklist GPUs (issue #3)
 cp files/blacklist-gpu.conf /mnt/newroot/etc/modprobe.d
 
 # zfs stuff
-echo "/etc/hostid" >> /mnt/newroot/etc/mkinitfs/features.d/zfshost.files
-echo 'features="ata base keymap kms mmc nvme scsi usb virtio zfs zfshost"' > /mnt/newroot/etc/mkinitfs/mkinitfs.conf
+echo "/etc/hostid" >>/mnt/newroot/etc/mkinitfs/features.d/zfshost.files
+echo 'features="ata base keymap kms mmc nvme scsi usb virtio zfs zfshost"' >/mnt/newroot/etc/mkinitfs/mkinitfs.conf
 
 # rebuild initfs for above two things
-chroot /mnt/newroot mkinitfs $(ls /mnt/newroot/lib/modules)                
+chroot /mnt/newroot mkinitfs $(ls /mnt/newroot/lib/modules)
 
 # services
 chroot /mnt/newroot rc-update add hwdrivers sysinit
-chroot /mnt/newroot rc-update add networking  boot
+chroot /mnt/newroot rc-update add networking boot
 chroot /mnt/newroot rc-update add hostname boot
 chroot /mnt/newroot rc-update add sshd default
 chroot /mnt/newroot rc-update add swap default
@@ -60,10 +48,9 @@ chroot /mnt/newroot rc-update add zfs-mount default
 
 # fstab
 SWAPDEV=$INSTALL_SWAP_DEV
-cat > /mnt/newroot/etc/fstab <<EOF
+cat >/mnt/newroot/etc/fstab <<EOF
 tmpfs	/tmp	tmpfs	nosuid,nodev	0	0
 #$SWAPDEV none swap sw 0 0
 EOF
 
 echo "ALPINEBOX: done"
-
