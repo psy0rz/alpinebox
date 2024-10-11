@@ -38,7 +38,7 @@ NOTE: This is just a redirect to https://raw.githubusercontent.com/psy0rz/alpine
 
 * Start the imager and specify your harddisk:
 ```
-# sh image /dev/sda
+# bash image /dev/sda
 ```
 This should download and reboot, and you're basically done :)
 
