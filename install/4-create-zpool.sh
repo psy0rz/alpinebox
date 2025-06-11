@@ -18,6 +18,7 @@ zpool create \
     -O dnodesize=auto \
     -O normalization=formD \
     -O relatime=on \
+    -O atime=off \
     -O xattr=sa \
     -R /mnt/newroot \
     $INSTALL_ZPOOL $INSTALL_ZPOOL_DEV
