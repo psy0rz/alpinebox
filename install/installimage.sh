@@ -2,7 +2,7 @@
 
 set -e
 
-DISK=$1
+DISK=${1:-/dev/$(lsblk -e8 -o NAME,TYPE,SIZE | grep 'disk' | awk '{printf $1;}')}
 RELEASE=${2:-latest}
 
 if [ "$RELEASE" == "latest" ]; then
@@ -14,13 +14,13 @@ else
 fi
 
 
-if ! [ "$DISK" ]; then
-    echo "Usage: $0 <disk> [release]"
-    echo "Will install Alpine Box on your system from a image."
-    echo "You should be able to run this from any Linux distro or environment."
+echo "Will install Alpine Box on your system."
 
-    echo "Will WIPE existing DATA!"
-    exit 1
+read -p "WARNING: installation will overwrite $DISK and all existing data will be lost! Proceed? (y/N) " -n 1 -r
+echo
+if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+    echo "Exiting. No changes have been made to your device."
+    exit
 fi
 
 echo "ALPINEBOX: Writing $URL to disk $DISK ..."
@@ -34,7 +34,7 @@ else
     exit 1
 fi
 
-eject -s /dev/sr0 || true
+test -e /dev/sr0 && eject -s /dev/sr0 || true
 
 echo "ALPINEBOX: All done, will reboot in 5 seconds.."
 sleep 5
