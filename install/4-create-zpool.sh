@@ -5,9 +5,9 @@
 
 set -e
 
-echo "ALPINEBOX: Creating zpool on $INSTALL_DISK"
 
 source config
+echo "ALPINEBOX: Creating zpool on $INSTALL_ZPOOL_DEV"
 
 zgenhostid -f
 

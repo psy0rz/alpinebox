@@ -1,6 +1,5 @@
 #!/bin/bash
 
-#NOTE: use with INSTALL_ZPOOL=... to override rpool name
 
 set -e
 
@@ -9,7 +8,7 @@ REPO=$(
     pwd
 )
 
-source $REPO/install/config
+source $REPO/install/versions
 
 #make sure host OS has zfs
 modprobe zfs || true
