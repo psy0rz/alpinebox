@@ -7,8 +7,6 @@ set -e
 
 echo "ALPINEBOX: Formatting EFI and installing bootloader (legacy and efi mode)"
 
-
-
 source config
 
 #format and mount

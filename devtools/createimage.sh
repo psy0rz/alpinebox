@@ -18,21 +18,14 @@ LOOP_DEV=`losetup -f`
 truncate -s $IMAGE_SIZE $IMAGE
 losetup -P $LOOP_DEV $IMAGE
 
-export INSTALL_DISK=$LOOP_DEV
-export INSTALL_EFI_DEV=$INSTALL_DISK""p2
-export INSTALL_SWAP_DEV=$INSTALL_DISK""p3
-export INSTALL_ZPOOL_DEV=$INSTALL_DISK""p4
-export INSTALL_ZPOOL=${INSTALL_ZPOOL:-rpool}
-
-
 cd ../install
-./1-prepare.sh
-./2-partition-disk.sh 
-./3-install-bootloader.sh 
-./4-create-zpool.sh 
-./5-install-alpine.sh 
-./6-install-extras.sh 
-./7-cleanup.sh
+./1-prepare.sh $LOOP_DEV
+./2-partition-disk.sh $LOOP_DEV
+./3-install-bootloader.sh $LOOP_DEV
+./4-create-zpool.sh $LOOP_DEV
+./5-install-alpine.sh $LOOP_DEV
+./6-install-extras.sh $LOOP_DEV
+./7-cleanup.sh $LOOP_DEV
 
 losetup -d $LOOP_DEV 
 rm $IMAGE"".gz &>/dev/null || true

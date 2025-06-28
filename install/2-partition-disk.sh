@@ -5,8 +5,9 @@
 
 set -e
 
-
 echo "ALPINEBOX: Partitioning $INSTALL_DISK"
+
+source config
 
 sgdisk --zap-all $INSTALL_DISK
 

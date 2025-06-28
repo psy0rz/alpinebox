@@ -5,9 +5,9 @@
 
 set -e
 
-source config
-
 echo "ALPINEBOX: Creating zpool on $INSTALL_DISK"
+
+source config
 
 zgenhostid -f
 
@@ -24,7 +24,7 @@ zpool create \
     -O relatime=on \
     -O atime=off \
     -O xattr=sa \
-    -R /mnt/newroot \
+    -R $INSTALL_ROOT \
     $INSTALL_ZPOOL $INSTALL_ZPOOL_DEV
 
 zfs create -o mountpoint=/ -o canmount=noauto $INSTALL_ZPOOL/ROOT
@@ -38,4 +38,4 @@ zfs mount $INSTALL_ZPOOL/ROOT
 zfs set org.zfsbootmenu:commandline="$APPEND" $INSTALL_ZPOOL/ROOT
 
 
-echo "ALPINEBOX: Done, $INSTALL_ZPOOL mounted under /mnt/newroot"
+echo "ALPINEBOX: Done, $INSTALL_ZPOOL mounted under $INSTALL_ROOT"

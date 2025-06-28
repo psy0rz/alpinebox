@@ -1,4 +1,27 @@
+# Alpine version and ZFSBootMenu version
 ALPINE_RELEASE=3.22
 APPEND="loglevel=4"
 CONFIG_ZFSBOOTMENU_EFI="https://github.com/zbm-dev/zfsbootmenu/releases/download/v3.0.1/zfsbootmenu-release-x86_64-v3.0.1-linux6.1.EFI"
 CONFIG_ZFSBOOTMENU_BIOS="https://github.com/zbm-dev/zfsbootmenu/releases/download/v3.0.1/zfsbootmenu-release-x86_64-v3.0.1-linux6.1.tar.gz"
+
+
+INSTALL_DISK=$1
+
+if ! [ "$INSTALL_DISK" ]; then
+    echo "Usage: $0 <disk>"
+    exit 1
+fi
+
+INSTALL_EFI_DEV=`lsblk -p -x NAME -ln -o NAME $INSTALL_DISK 2>/dev/null | sed -n "3p"` # partition #2
+INSTALL_SWAP_DEV=`lsblk -p -x NAME -ln -o NAME $INSTALL_DISK 2>/dev/null | sed -n "4p"` # partition #3
+INSTALL_ZPOOL_DEV=`lsblk -p -x NAME -ln -o NAME $INSTALL_DISK 2>/dev/null | sed -n "5p"` # partition #4
+INSTALL_ZPOOL=rpool
+INSTALL_ROOT=/mnt/newroot
+
+echo "ALPINEBOX: INSTALL_DISK      = $INSTALL_DISK"
+echo "ALPINEBOX: INSTALL_EFI_DEV   = $INSTALL_EFI_DEV"
+echo "ALPINEBOX: INSTALL_SWAP_DEV  = $INSTALL_SWAP_DEV"
+echo "ALPINEBOX: INSTALL_ZPOOL_DEV = $INSTALL_ZPOOL_DEV"
+
+
+
