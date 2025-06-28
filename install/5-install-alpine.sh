@@ -47,10 +47,8 @@ chroot /mnt/newroot rc-update add zfs-mount default
 # chroot /mnt/newroot rc-update add zfs-import default
 
 # fstab
-SWAPDEV=$INSTALL_SWAP_DEV
 cat >/mnt/newroot/etc/fstab <<EOF
 tmpfs	/tmp	tmpfs	nosuid,nodev	0	0
-#$SWAPDEV none swap sw 0 0
 EOF
 
 echo "ALPINEBOX: done"

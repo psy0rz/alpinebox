@@ -1,7 +1,13 @@
 #!/bin/sh
+# Environment variables:
+# INSTALL_DISK: The disk to install Alpine Box on (e.g. /dev/sda)
+# INSTALL_EFI_DEV: The EFI partition (e.g. /dev/sda2)
+
 set -e
 
 echo "ALPINEBOX: Formatting EFI and installing bootloader (legacy and efi mode)"
+
+
 
 source config
 

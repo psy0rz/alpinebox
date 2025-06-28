@@ -1,4 +1,8 @@
 #!/bin/sh
+# Environment variables:
+# INSTALL_ZPOOL: The name of the zpool (e.g. rpool)
+# INSTALL_ZPOOL_DEV: The device for the zpool (e.g. /dev/sda4)
+
 set -e
 
 source config
