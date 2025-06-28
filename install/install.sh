@@ -26,7 +26,9 @@ export INSTALL_ZPOOL=${INSTALL_ZPOOL:-rpool}
 ./6-install-extras.sh 
 ./7-cleanup.sh
 
-eject -s /dev/sr0 || true
+test -e /dev/sr0 && eject -s /dev/sr0 || true
+
+
 
 echo "ALPINEBOX: All done, will reboot in 5 seconds.."
 sleep 5
