@@ -48,7 +48,7 @@ This should download and reboot, and you're basically done :)
 Here are some specific VPS provider tips on how to get into an environment to start the installer:
 
 * Hetzner cloud: Via the Hetzner [console](https://console.hetzner.cloud/) request a Rescue boot. See [this screenshot.](https://github.com/psy0rz/alpinebox/assets/1179017/b3553522-8305-4cc2-86c2-6b86fd8ff61e)
-* Hetzner robot: for a new machine select Resque and connect to that shell. Once installed you can boot alpinbox via their vkvm resque mode to add you ssh-key or set a root pass.
+* Hetzner robot: for a new machine select Resque and connect to that shell. Abort the reboot, and use `zpool import -R /mnt rpool` and `chroot /mnt` to set root password or add ssh keys.
 * TransIP: Open de console screen in popup-mode and choose to boot linux in Rescue mode. See [this screenshot.](https://github.com/psy0rz/alpinebox/assets/1179017/0be92242-9ba8-4c2b-99ea-ed6add088a9a)
 
 Once you've entered the rescue environment, you can use the Alpinebox installer mentioned above.
