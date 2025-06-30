@@ -47,13 +47,55 @@ This should download and reboot, and you're basically done :)
 
 Here are some specific VPS provider tips on how to get into an environment to start the installer:
 
-* Hetzner cloud: Via the Hetzner [console](https://console.hetzner.cloud/) request a Rescue boot. See [this screenshot.](https://github.com/psy0rz/alpinebox/assets/1179017/b3553522-8305-4cc2-86c2-6b86fd8ff61e)
-* Hetzner robot: for a new machine select Resque and connect to that shell. Abort the reboot, and use `zpool import -R /mnt rpool` and `chroot /mnt` to set root password or add ssh keys.
-* TransIP: Open de console screen in popup-mode and choose to boot linux in Rescue mode. See [this screenshot.](https://github.com/psy0rz/alpinebox/assets/1179017/0be92242-9ba8-4c2b-99ea-ed6add088a9a)
+### Hetzner cloud: 
+
+If you have a hetzner VM.
+
+Via the Hetzner [console](https://console.hetzner.cloud/) request a Rescue boot. See [this screenshot.](https://github.com/psy0rz/alpinebox/assets/1179017/b3553522-8305-4cc2-86c2-6b86fd8ff61e)
+
+### Hetzner robot:
+
+If you have a hetzner dedicated server.
+
+#### Method 1 (cli resque only):
+
+* Start the server in resque mode
+* Use the default imaging install method shown above, dont reboot.
+* Now we need to set the root password or add ssh keys:
+ * `zpool import -R /mnt rpool` (first time this will auto install zfs tools)
+ * `chroot /mnt`
+* Setup root password or add ssh keys.
+* Exit and reboot
+
+#### Method 2 (hetzner vkvm):
+
+This starts your harddisks as a qemu VM, which vnc access. Much nicer for testing/fixing stuff.
+
+ * Start the server in vkvm mode.
+ * Login to the ssh resque environment on port 47772 (login as root and with the password hetzner gave you in their control panel)
+ * Stop vkvm: `systemctl stop vkvm-startup` so your harddisk is accesible.
+ * Use the default imaging install method shown above, dont reboot.
+ * Start vkvm: `systemctl start vkvm-startup`
+ * Server should boot, and be accesible via webinterface at `https://x.x.x.x:47773/` (hetzners control panel tells you this)
+ * Login and add ssh keys or set root pass.
+ * Now you can reboot the rescue shell and make the server actually boot by itself.
+
+#### UEFI boot problems in vkvm
+
+Sometimes it seems to get stuck in a UEFI boot loop. When this is the case, simple disable it like this:
+
+ * Edit `/opt/vkvm/startqemu`
+ * Remove `-drive if=pflash,format=raw,file=/usr/share/OVMF/OVMF_CODE.fd`
+ * `systemctl restart vkvm-startupe`
+
+
+### TransIP
+
+Open de console screen in popup-mode and choose to boot linux in Rescue mode. See [this screenshot.](https://github.com/psy0rz/alpinebox/assets/1179017/0be92242-9ba8-4c2b-99ea-ed6add088a9a)
 
 Once you've entered the rescue environment, you can use the Alpinebox installer mentioned above.
 
-Note: Some provider require a powercycle or reset, after the installer. (normal reboot doesnt work)
+Requires a power cycle of the VM, not just a reboot, to get it working.
 
 ## Login
 
