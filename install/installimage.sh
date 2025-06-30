@@ -34,6 +34,4 @@ fi
 
 eject -s /dev/sr0 2>/dev/null || true
 
-echo "ALPINEBOX: All done, will reboot in 5 seconds.."
-sleep 5
-reboot
+echo "ALPINEBOX: All done. You can now reboot your system."
