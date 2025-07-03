@@ -103,7 +103,7 @@ If you have a hetzner dedicated server.
 
 #### Method 2 (hetzner vkvm):
 
-This starts your harddisks as a qemu VM, which vnc access. Much nicer for testing/fixing stuff.
+This starts your harddisks as a qemu VM, with vnc access. Much nicer for testing/fixing stuff.
 
  * Start the server in vkvm mode.
  * Login to the ssh resque environment on port 47772 (login as root and with the password hetzner gave you in their control panel)
@@ -116,12 +116,13 @@ This starts your harddisks as a qemu VM, which vnc access. Much nicer for testin
 
 #### UEFI boot problems in vkvm
 
-Sometimes it seems to get stuck in a UEFI boot loop. When this is the case, simple disable it like this:
+Sometimes it seems to get stuck in a UEFI boot loop. When this is the case, simply disable it like this:
 
  * Edit `/opt/vkvm/startqemu`
  * Remove `-drive if=pflash,format=raw,file=/usr/share/OVMF/OVMF_CODE.fd`
  * `systemctl restart vkvm-startup`
 
+This should boot it in bios-mode without any problems.
 
 ### TransIP
 
