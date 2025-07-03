@@ -82,12 +82,13 @@ This starts your harddisks as a qemu VM, with vnc access. Much nicer for testing
 
 #### UEFI boot problems in vkvm
 
-Sometimes it seems to get stuck in a UEFI boot loop. When this is the case, simple disable it like this:
+Sometimes it seems to get stuck in a UEFI boot loop. When this is the case, simply disable it like this:
 
  * Edit `/opt/vkvm/startqemu`
  * Remove `-drive if=pflash,format=raw,file=/usr/share/OVMF/OVMF_CODE.fd`
  * `systemctl restart vkvm-startupe`
 
+This should boot it in bios-mode without any problems.
 
 ### TransIP
 
