@@ -43,6 +43,40 @@ NOTE: This is just a redirect to https://raw.githubusercontent.com/psy0rz/alpine
 ```
 This should download and reboot, and you're basically done :)
 
+## Login
+
+There is no root-password for console logins. However, for ssh you will need to add your keys. 
+
+## Growing the disk
+
+Since it's an image, you will need to grow the partition and zfs disk:
+![image](https://github.com/psy0rz/alpinebox/assets/1179017/7aced4e6-bc15-4be0-803c-69f5717f04af)
+
+Just run `grow-disks` script in /root/alpinebox, and it should be handled automaticly without a reboot even.
+
+**Do this as soon as possible, since its a somewhat risky operation** 
+
+
+## Adding a disk
+
+To add a disk to the zpool as a mirror, just run the `add-disk` script in /root/alpinebox 
+
+This will also make sure that the disk has the correction partitioning, MBR/UEFI and ZfsBootmenu stuff. 
+So that if the first disk completely fails, you can still boot from this one.
+
+Make sure you remove any non-ONLINE disks from the pool first.
+
+## Backups
+
+To make backups via ZFS replication, check out my other project: https://pypi.org/project/zfs-autobackup/
+
+## Safe updates
+
+Now everytime you need to do a bunch of Alpine upgrade, just run something like: `zfs snapshot rpool/ROOT@upgrades1`
+
+If the upgrade fails you can rollback via the ZfsBootmenu.
+
+
 ## VPS provider tips:
 
 Here are some specific VPS provider tips on how to get into an environment to start the installer:
@@ -86,7 +120,7 @@ Sometimes it seems to get stuck in a UEFI boot loop. When this is the case, simp
 
  * Edit `/opt/vkvm/startqemu`
  * Remove `-drive if=pflash,format=raw,file=/usr/share/OVMF/OVMF_CODE.fd`
- * `systemctl restart vkvm-startupe`
+ * `systemctl restart vkvm-startup`
 
 
 ### TransIP
@@ -97,38 +131,6 @@ Once you've entered the rescue environment, you can use the Alpinebox installer 
 
 Requires a power cycle of the VM, not just a reboot, to get it working.
 
-## Login
-
-There is no root-password for console logins. However, for ssh you will need to add your keys. 
-
-## Growing the disk
-
-Since it's an image, you will need to grow the partition and zfs disk:
-![image](https://github.com/psy0rz/alpinebox/assets/1179017/7aced4e6-bc15-4be0-803c-69f5717f04af)
-
-Just run `grow-disks` script in /root/alpinebox, and it should be handled automaticly without a reboot even.
-
-**Do this as soon as possible, since its a somewhat risky operation** 
-
-
-## Adding a disk
-
-To add a disk to the zpool as a mirror, just run the `add-disk` script in /root/alpinebox 
-
-This will also make sure that the disk has the correction partitioning, MBR/UEFI and ZfsBootmenu stuff. 
-So that if the first disk completely fails, you can still boot from this one.
-
-Make sure you remove any non-ONLINE disks from the pool first.
-
-## Backups
-
-To make backups via ZFS replication, check out my other project: https://pypi.org/project/zfs-autobackup/
-
-## Safe updates
-
-Now everytime you need to do a bunch of Alpine upgrade, just run something like: `zfs snapshot rpool/ROOT@upgrades1`
-
-If the upgrade fails you can rollback via the ZfsBootmenu.
 
 # Installing via official Alpine installer
 

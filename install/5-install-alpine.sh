@@ -46,6 +46,8 @@ chroot $INSTALL_ROOT rc-update add crond default
 chroot $INSTALL_ROOT rc-update add syslog default
 chroot $INSTALL_ROOT rc-update add chronyd default
 chroot $INSTALL_ROOT rc-update add zfs-mount default
+chroot $INSTALL_ROOT rc-update add sysctl default 
+
 # chroot $INSTALL_ROOT rc-update add zfs-import default
 
 # fstab
