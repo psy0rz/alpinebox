@@ -69,7 +69,7 @@ If you have a hetzner dedicated server.
 
 #### Method 2 (hetzner vkvm):
 
-This starts your harddisks as a qemu VM, which vnc access. Much nicer for testing/fixing stuff.
+This starts your harddisks as a qemu VM, with vnc access. Much nicer for testing/fixing stuff.
 
  * Start the server in vkvm mode.
  * Login to the ssh resque environment on port 47772 (login as root and with the password hetzner gave you in their control panel)
