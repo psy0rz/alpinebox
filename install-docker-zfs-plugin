@@ -1,0 +1,33 @@
+#!/bin/sh
+
+# Installs the Docker ZFS volume plugin
+# This makes it so that eache docker volume can be its own ZFS dataset
+
+set -e
+
+apk add git go
+
+#build and install the plugin
+rm -rf /tmp/docker-zfs-plugin
+git clone https://github.com/csachs/docker-zfs-plugin.git /tmp/docker-zfs-plugin
+cd /tmp/docker-zfs-plugin
+go build;
+GOBIN=/usr/local/bin go install
+
+#create service
+cat << EOF > /etc/init.d/docker-zfs-plugin
+#!/sbin/openrc-run
+command="/usr/local/bin/docker-zfs-plugin"
+command_args=" --dataset-name rpool/var/lib/docker/volumes --verbose"
+command_background=true
+#command_args_background="--daemon"
+pidfile="/run/${RC_SVCNAME}.pid"
+EOF
+chmod +x /etc/init.d/docker-zfs-plugin
+
+#enable and start service
+rc-update add docker-zfs-plugin
+rc-service docker-zfs-plugin start
+
+
+
