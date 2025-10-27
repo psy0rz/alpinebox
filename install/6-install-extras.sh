@@ -28,6 +28,9 @@ cp files/z_dtap-prompt.sh $INSTALL_ROOT/etc/profile.d/
 ########### this repo
 cp -R .. $INSTALL_ROOT/root/alpinebox
 chown -R root:root $INSTALL_ROOT/root/alpinebox
+cd $INSTALL_ROOT/root/alpinebox
+git remote set https://github.com/psy0rz/alpinebox.git
+
 
 ########## stuff to make life easier
 mkdir $INSTALL_ROOT/root/.ssh

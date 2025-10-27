@@ -1,0 +1,57 @@
+#!/bin/sh
+
+set -e
+
+echo "ALPINEBOX: Setting up firewall"
+
+apk add iptables ip6tables ipset
+
+#disable save on stop, to prevent saving dockers iptables rules!
+sed 's/.*SAVE_ON_STOP.*/SAVE_ON_STOP="n"/' -i /etc/conf.d/iptables
+sed 's/.*SAVE_ON_STOP.*/SAVE_ON_STOP="n"/' -i /etc/conf.d/ip6tables
+
+#create admin ipsets
+/etc/init.d/ipset start
+ipset create admins-ipv4 hash:ip || true
+ipset create admins-ipv6 hash:ip family inet6 || true
+/etc/init.d/ipset save
+rc-update add ipset default
+
+# ipv4 firewall 
+cat << EOF > /etc/iptables/rules-save
+*filter
+:INPUT DROP [0:0]
+:BASIC_FW - [0:0]
+[0:0] -A INPUT -j BASIC_FW
+[0:0] -A BASIC_FW -i lo -j ACCEPT
+[0:0] -A BASIC_FW -p icmp -j ACCEPT
+[0:0] -A BASIC_FW -p tcp -m tcp --dport 22 -m conntrack --ctstate NEW  -m set --match-set admins-ipv4 src -j ACCEPT
+[0:0] -A BASIC_FW -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+COMMIT
+EOF
+
+rc-update add iptables default
+
+
+# ipv6 firewall 
+cat << EOF > /etc/iptables/rules6-save
+*filter
+:INPUT DROP [0:0]
+:BASIC_FW - [0:0]
+[0:0] -A INPUT -j BASIC_FW
+[0:0] -A BASIC_FW -i lo -j ACCEPT
+[0:0] -A BASIC_FW -p icmp -j ACCEPT
+[0:0] -A BASIC_FW -p tcp -m tcp --dport 22 -m conntrack --ctstate NEW  -m set --match-set admins-ipv6 src -j ACCEPT
+[0:0] -A BASIC_FW -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+COMMIT
+EOF
+
+
+rc-update add ip6tables default
+
+echo "ALPINEBOX: Firewall setup complete"
+echo
+echo "ALPINEBOX: Reboot once to activate firewall"
+echo "ALPINEBOX: Please add your admin IP addresses /etc/ipset.d/admins-ipv4 and run /etc/init.d/ipset reload"
+echo "ALPINEBOX: NOTE: if you use docker, never restart the firewall after docker has started, since that flushes dockers iptables rules!"
+

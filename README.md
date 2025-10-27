@@ -43,6 +43,8 @@ NOTE: This is just a redirect to https://raw.githubusercontent.com/psy0rz/alpine
 ```
 This should download and reboot, and you're basically done :)
 
+If you have trouble installing. see [VPS provider tips](#vps-provider-tips)
+
 ## Login
 
 There is no root-password for console logins. However, for ssh you will need to add your keys. 
@@ -77,7 +79,27 @@ Now everytime you need to do a bunch of Alpine upgrade, just run something like:
 If the upgrade fails you can rollback via the ZfsBootmenu.
 
 
-## VPS provider tips:
+# Installing docker or portainer
+
+After installing alpinebox, go to /root/alpinebox.
+
+Here you will find various install script.
+
+To install docker, just run `./install-docker`
+
+If you also want portainer, run `./install-portainer`
+
+This will give you furhter instrucions on what to do after its done.
+
+# Installing firewall
+
+Go to /root/alpinebox and run `./install-firewall`
+
+This will install a minimal firewall that only allows ssh from trusted ipadressed. (Via ipsets in /etc/ipset.d/)
+
+This will not interfere with docker. The script will provide you some more info after running it.
+
+# VPS provider tips:
 
 Here are some specific VPS provider tips on how to get into an environment to start the installer:
 
@@ -131,45 +153,6 @@ Open de console screen in popup-mode and choose to boot linux in Rescue mode. Se
 Once you've entered the rescue environment, you can use the Alpinebox installer mentioned above.
 
 Requires a power cycle of the VM, not just a reboot, to get it working.
-
-
-# Installing via official Alpine installer
-
-If you dont like the imaging method above, you can also use the official Alpine ISO and our install scripts:
-
-## 1. Boot Alpine installer
-
-Get and boot a matching Alpine version: https://alpinelinux.org/downloads/
-
-Note: Should be the extended edition, since that one has ZFS support.
-
-## 2. Configure network
-
-Get you network configured with:
-```
-setup-interfaces -r
-```
-
-## 3. Run this quick installer
-
-```
-wget https://boot.datux.nl/install
-sh install /dev/sda
-```
-
-This will partition/format/install and reboot.
-
-
-# Creating you own image
-
-Look in the devtools directory. With `createimage.sh` you can create your own image.
-Run it from an Alpine ISO or installation. 
-You might need to install some dependencies first if something fails.
-
-
-# Install docker with zfs-volume support
-
-See https://github.com/csachs/docker-zfs-plugin
 
 # More info
 

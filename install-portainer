@@ -18,9 +18,9 @@ fi
 
 docker compose up -d 
 
-
-
-echo "ALPINEBOX: Please edit /root/portainer-templates/core/.env and use 'docker compose up -d' to finish the setup"
-
-
+echo
 echo "ALPINEBOX: Portainer installed"
+echo
+echo "ALPINEBOX: Please go to /root/portainer-templates/core/, edit ths .env file  and use 'docker compose up -d' to finish the setup"
+echo "ALPINEBOX: Login to portainer with admin/admin, set this as the template URL: https://raw.githubusercontent.com/psy0rz/portainer-templates/main/templates.json"
+
