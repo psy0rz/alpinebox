@@ -1,0 +1,45 @@
+#!/bin/sh
+
+echo "ALPINEBOX: Installing Docker"
+
+set -e
+
+#dependencies
+./install-docker-zfs-plugin
+
+#prepare zfs datasets
+zfs create -p -o mountpoint=none rpool/var/lib/docker/volumes
+zfs create -p -o mountpoint=none rpool/var/lib/docker/images
+
+#install
+apk add  docker docker-bash-completion docker-cli-compose
+
+#configuration
+mkdir -p /etc/docker
+cat << EOF > /etc/docker/daemon.json
+ {
+    "storage-driver": "zfs",
+    "storage-opts": ["zfs.fsname=rpool/var/lib/docker/images"],
+    "default-address-pools":
+    [
+        {"base":"172.19.0.0/16","size":24 }
+    ],
+    "log-opts": {
+        "max-size": "1m",
+        "max-file": "2"
+        },
+    "dns-opts": ["ndots:1"]
+
+    }
+EOF
+
+#enable and start docker service
+rc-update add docker
+rc-service docker start
+
+#permanently set fs.inotify.max_user_instances to 1024
+sysctl -w fs.inotify.max_user_instances=1024
+echo "fs.inotify.max_user_instances=1024" > /etc/sysctl.d/inotify.conf
+
+
+echo "ALPINEBOX: Docker installed"

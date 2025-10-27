@@ -1,9 +1,12 @@
 #!/bin/sh
 
 # Installs the Docker ZFS volume plugin
-# This makes it so that eache docker volume can be its own ZFS dataset
+# This makes it so that each docker volume can be its own ZFS dataset
+
+echo "ALPINEBOX: Installing docker zfs volume plugin"
 
 set -e
+
 
 apk add git go
 
@@ -29,5 +32,5 @@ chmod +x /etc/init.d/docker-zfs-plugin
 rc-update add docker-zfs-plugin
 rc-service docker-zfs-plugin start
 
-
+echo "ALPINEBOX: Docker zfs volume plugin installed"
 
