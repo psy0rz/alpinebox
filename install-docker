@@ -37,9 +37,14 @@ EOF
 rc-update add docker
 rc-service docker start
 
-#permanently set fs.inotify.max_user_instances to 1024
-sysctl -w fs.inotify.max_user_instances=1024
-echo "fs.inotify.max_user_instances=1024" > /etc/sysctl.d/inotify.conf
+#set some sysctl stuff neccessary for some containers
+cat << EOF > /etc/sysctl.d/docker.conf
+#for opensearch/elasticsearch
+vm.max_map_count=1024000
+#for some containers
+fs.inotify.max_user_instances=1024
+EOF
+service sysctl restart
 
 
 echo "ALPINEBOX: Docker installed"
