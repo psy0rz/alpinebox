@@ -29,7 +29,7 @@ cp files/z_dtap-prompt.sh $INSTALL_ROOT/etc/profile.d/
 cp -R .. $INSTALL_ROOT/root/alpinebox
 chown -R root:root $INSTALL_ROOT/root/alpinebox
 cd $INSTALL_ROOT/root/alpinebox
-git remote set https://github.com/psy0rz/alpinebox.git
+git remote set-url origin https://github.com/psy0rz/alpinebox.git
 
 
 ########## stuff to make life easier
