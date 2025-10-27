@@ -29,8 +29,8 @@ cp files/z_dtap-prompt.sh $INSTALL_ROOT/etc/profile.d/
 cp -R .. $INSTALL_ROOT/root/alpinebox
 chown -R root:root $INSTALL_ROOT/root/alpinebox
 cd $INSTALL_ROOT/root/alpinebox
-git remote set-url origin https://github.com/psy0rz/alpinebox.git
-
+rm .git/config #clean any access tokens
+git remote add origin https://github.com/psy0rz/alpinebox.git -t master
 
 ########## stuff to make life easier
 mkdir $INSTALL_ROOT/root/.ssh
