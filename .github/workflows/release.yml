@@ -1,4 +1,4 @@
-name: Run Script in Alpine VM
+name: Build image
 
 on:
   
