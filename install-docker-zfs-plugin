@@ -8,6 +8,12 @@ echo "ALPINEBOX: Installing docker zfs volume plugin"
 set -e
 
 
+#prepare zfs datasets
+zfs create -p -o mountpoint=/var/lib/docker rpool/var/lib/docker || true
+zfs create -p rpool/var/lib/docker/volumes || true
+zfs create -p -o mountpoint=none rpool/var/lib/docker/images || true
+
+#dependencies
 apk add git go
 
 #build and install the plugin
@@ -30,7 +36,7 @@ chmod +x /etc/init.d/docker-zfs-plugin
 
 #enable and start service
 rc-update add docker-zfs-plugin
-rc-service docker-zfs-plugin start
+rc-service docker-zfs-plugin restart
 
 echo "ALPINEBOX: Docker zfs volume plugin installed"
 

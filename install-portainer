@@ -1,0 +1,26 @@
+#!/bin/sh
+
+set -e
+
+# dependencies
+./install-docker
+
+echo "ALPINEBOX: Installing Portainer"
+
+if [ ! -e /root/portainer-templates ]; then
+    git clone https://github.com/psy0rz/portainer-templates.git /root/portainer-templates
+fi
+
+cd /root/portainer-templates/core
+if ! [ -e .env ]; then
+    cp .env-example .env
+fi
+
+docker compose up -d 
+
+
+
+echo "ALPINEBOX: Please edit /root/portainer-templates/core/.env and use 'docker compose up -d' to finish the setup"
+
+
+echo "ALPINEBOX: Portainer installed"
