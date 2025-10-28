@@ -1,0 +1,22 @@
+#!/bin/sh
+
+set -e
+
+echo "ALPINEBOX: Installing zfs-autobackup"
+
+apk add pipx
+pipx ensurepath
+
+pipx install zfs-autobackup --force
+
+zfs set autobackup:backup=true rpool 
+zfs set autobackup:backup=false rpool/var/lib/docker/images || true
+
+#add to runparts daily cronjob
+cat <<EOF > /etc/periodic/daily/zfs-autobackup
+#!/bin/sh
+/root/.local/bin/zfs-autobackup backup
+EOF
+chmod +x /etc/periodic/daily/zfs-autobackup
+
+echo "ALPINEBOX: zfs-autobackup installed, daily snapshot cronjob created"

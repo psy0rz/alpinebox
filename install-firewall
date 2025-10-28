@@ -1,5 +1,9 @@
 #!/bin/sh
 
+# Installs and configures a basic firewall using iptables and ipset, doesnt conflict with docker. 
+# Only allows ssh from admin IPs stored in ipsets.
+
+
 set -e
 
 echo "ALPINEBOX: Setting up firewall"
