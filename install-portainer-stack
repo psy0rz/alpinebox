@@ -1,0 +1,14 @@
+#!/bin/sh
+
+# Install a "portainer" stack, including firewall , zfs-backup and other stuff we use a lot on our default docker server
+set -e
+
+echo "ALPINEBOX: Installing Portainer stack"
+
+./install-portainer
+./install-zfs-autobackup
+./install-firewall
+
+echo "ALPINEBOX: Portainer stack installed"
+
+
