@@ -35,7 +35,7 @@ Installation by just writing the official image to the disk is the easiest way:
 ```
 # wget https://boot.datux.nl/image
 ```
-NOTE: This is just a redirect to https://raw.githubusercontent.com/psy0rz/alpinebox/master/install/installimage.sh
+*NOTE: This is just a redirect to https://raw.githubusercontent.com/psy0rz/alpinebox/master/install/installimage.sh*
 
 * Start the imager and specify your harddisk:
 ```
@@ -83,11 +83,11 @@ If the upgrade fails you can rollback via the ZfsBootmenu.
 
 After installing alpinebox, go to /root/alpinebox.
 
-Here you will find various install script.
+Here you will find various install scripts.
 
 To install docker, just run `./install-docker`
 
-If you also want portainer, run `./install-portainer`
+If you also want portainer, run `./install-portainer` instead.
 
 This will give you furhter instrucions on what to do after its done.
 
