@@ -17,11 +17,11 @@ Since installing Alpine with ZFS and ZfsBootmenu needs a whole tutorial with man
 
 ## Why Alpine Linux?
 
-Alpine is one of the best and cleanest Linux distros out there, for running Docker and various other stuff. Packages like the Linux kernel, ZFS support and Docker are very up to date but also very stable. 
+Alpine is one of the best and cleanest Linux distros out there, for running Docker and various other stuff. Packages like the Linux kernel, ZFS support and Docker are not only very up to date, but also very stable. 
 
-Its super small, fast and simple. Its not the most versatile distribution, but what it does, it does very well.
+It's super small, fast and simple. It's not the most versatile distribution, but what it does, it does very well.
 
-Also upgrading to newer releases is quick and painless, in contrast to other distro's. And since we use snapshots before upgrading, its easy to roll back should there be a problem.
+Also upgrading to newer releases is quick and painless, in contrast to other distro's. And since we use snapshots before upgrading, it's easy to roll back should there be a problem.
 
 For this reason all our boxes run Alpine and just auto-upgrade and reboot every week without problems.
 
@@ -54,17 +54,16 @@ There is no root-password for console logins. However, for ssh you will need to 
 Since it's an image, you will need to grow the partition and zfs disk:
 ![image](https://github.com/psy0rz/alpinebox/assets/1179017/7aced4e6-bc15-4be0-803c-69f5717f04af)
 
-Just run `grow-disks` script in /root/alpinebox, and it should be handled automaticly without a reboot even.
+Just run `grow-disks` script in /root/alpinebox, and it should be handled automatically, without needing a reboot. 
 
-**Do this as soon as possible, since its a somewhat risky operation** 
+**Do this as soon as possible, since it's a somewhat risky operation** 
 
 
 ## Adding a disk
 
 To add a disk to the zpool as a mirror, just run the `add-disk` script in /root/alpinebox 
 
-This will also make sure that the disk has the correction partitioning, MBR/UEFI and ZfsBootmenu stuff. 
-So that if the first disk completely fails, you can still boot from this one.
+This will also make sure that the disk has the correct partitioning, MBR/UEFI and ZfsBootmenu stuff, so that if the first disk completely fails, you can still boot from this one.
 
 Make sure you remove any non-ONLINE disks from the pool first.
 
@@ -74,7 +73,7 @@ To make backups via ZFS replication, check out my other project: https://pypi.or
 
 ## Safe updates
 
-Now everytime you need to do a bunch of Alpine upgrade, just run something like: `zfs snapshot rpool/ROOT@upgrades1`
+Now everytime you need to do a bunch of Alpine upgrades, just run something like: `zfs snapshot rpool/ROOT@upgrades1`
 
 If the upgrade fails you can rollback via the ZfsBootmenu.
 
@@ -89,15 +88,15 @@ To install docker, just run `./install-docker`
 
 If you also want portainer, run `./install-portainer` instead.
 
-This will give you furhter instrucions on what to do after its done.
+This will give you further instructions on what to do after it's done.
 
 # Installing firewall
 
 Go to /root/alpinebox and run `./install-firewall`
 
-This will install a minimal firewall that only allows ssh from trusted ipadressed. (Via ipsets in /etc/ipset.d/)
+This will install a minimal firewall that only allows ssh from trusted IP addresses (via ipsets in /etc/ipset.d/).
 
-This will not interfere with docker. The script will provide you some more info after running it.
+This will not interfere with docker. The script will provide you with more info after running it.
 
 # VPS provider tips:
 
@@ -113,9 +112,9 @@ Via the Hetzner [console](https://console.hetzner.cloud/) request a Rescue boot.
 
 If you have a hetzner dedicated server.
 
-#### Method 1 (cli resque only):
+#### Method 1 (cli rescue only):
 
-* Start the server in resque mode
+* Start the server in rescue mode
 * Use the default imaging install method shown above, dont reboot.
 * Now we need to set the root password or add ssh keys:
  * `zpool import -R /mnt rpool` (first time this will auto install zfs tools)
@@ -128,11 +127,11 @@ If you have a hetzner dedicated server.
 This starts your harddisks as a qemu VM, with vnc access. Much nicer for testing/fixing stuff.
 
  * Start the server in vkvm mode.
- * Login to the ssh resque environment on port 47772 (login as root and with the password hetzner gave you in their control panel)
- * Stop vkvm: `systemctl stop vkvm-startup` so your harddisk is accesible.
+ * Login to the ssh rescue environment on port 47772 (login as root and with the password hetzner gave you in their control panel)
+ * Stop vkvm: `systemctl stop vkvm-startup` so your harddisk is accessible.
  * Use the default imaging install method shown above, dont reboot.
  * Start vkvm: `systemctl start vkvm-startup`
- * Server should boot, and be accesible via webinterface at `https://x.x.x.x:47773/` (hetzners control panel tells you this)
+ * Server should boot, and be accessible via webinterface at `https://x.x.x.x:47773/` (hetzners control panel tells you this)
  * Login and add ssh keys or set root pass.
  * Now you can reboot the rescue shell and make the server actually boot by itself.
 
@@ -148,7 +147,7 @@ This should boot it in bios-mode without any problems.
 
 ### TransIP
 
-Open de console screen in popup-mode and choose to boot linux in Rescue mode. See [this screenshot.](https://github.com/psy0rz/alpinebox/assets/1179017/0be92242-9ba8-4c2b-99ea-ed6add088a9a)
+Open the console screen in popup-mode and choose to boot linux in Rescue mode. See [this screenshot.](https://github.com/psy0rz/alpinebox/assets/1179017/0be92242-9ba8-4c2b-99ea-ed6add088a9a)
 
 Once you've entered the rescue environment, you can use the Alpinebox installer mentioned above.
 
