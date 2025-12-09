@@ -58,4 +58,7 @@ echo
 echo "ALPINEBOX: Reboot once to activate firewall"
 echo "ALPINEBOX: Please add your admin IP addresses /etc/ipset.d/admins-ipv4 and run /etc/init.d/ipset reload"
 echo "ALPINEBOX: NOTE: if you use docker, never restart the firewall after docker has started, since that flushes dockers iptables rules!"
+echo ""
+echo "ALPINEBOX: To add ips: ipset add admins-ipv4 192.168.13.0/24"
+echo "ALPINEBOX: To save to disk: /etc/init.d/ipset save"
 
