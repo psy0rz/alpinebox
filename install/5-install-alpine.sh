@@ -11,7 +11,7 @@ cp /etc/apk/repositories $INSTALL_ROOT/etc/apk
 
 apk --allow-untrusted -U --root $INSTALL_ROOT --initdb add \
     alpine-base \
-    linux-firmware-none linux-lts openssh-server openssh-client chrony acpid syslinux sgdisk partx mount zfs wireless-tools wpa_supplicant lsblk
+    linux-firmware-none linux-lts openssh-server openssh-client chrony acpid syslinux sgdisk partx mount zfs wireless-tools wpa_supplicant lsblk curl
 
 cp /etc/hostid $INSTALL_ROOT/etc
 cp /etc/resolv.conf $INSTALL_ROOT/etc

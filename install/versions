@@ -1,3 +1,3 @@
-ALPINE_RELEASE=3.22
-CONFIG_ZFSBOOTMENU_EFI="https://github.com/zbm-dev/zfsbootmenu/releases/download/v3.0.1/zfsbootmenu-release-x86_64-v3.0.1-linux6.1.EFI"
-CONFIG_ZFSBOOTMENU_BIOS="https://github.com/zbm-dev/zfsbootmenu/releases/download/v3.0.1/zfsbootmenu-release-x86_64-v3.0.1-linux6.1.tar.gz"
+ALPINE_RELEASE=3.23
+CONFIG_ZFSBOOTMENU_EFI="https://github.com/zbm-dev/zfsbootmenu/releases/download/v3.1.0/zfsbootmenu-release-x86_64-v3.1.0-linux6.18.EFI"
+CONFIG_ZFSBOOTMENU_BIOS="https://github.com/zbm-dev/zfsbootmenu/releases/download/v3.1.0/zfsbootmenu-release-x86_64-v3.1.0-linux6.18.tar.gz"
