@@ -41,7 +41,9 @@ Installation by just writing the official image to the disk is the easiest way:
 ```
 # bash image /dev/sda
 ```
-This should download and reboot, and you're basically done :)
+This should download and write the image to disk, and you're basically done :)
+
+You can now reboot, but for some VPS providers a powercycle is needed.
 
 If you have trouble installing. see [VPS provider tips](#vps-provider-tips)
 
