@@ -104,19 +104,19 @@ This will not interfere with docker. The script will provide you with more info 
 
 Here are some specific VPS provider tips on how to get into an environment to start the installer:
 
-### Hetzner cloud: 
+### Hetzner cloud VM: 
 
 If you have a hetzner VM.
 
 Via the Hetzner [console](https://console.hetzner.cloud/) request a Rescue boot. See [this screenshot.](https://github.com/psy0rz/alpinebox/assets/1179017/b3553522-8305-4cc2-86c2-6b86fd8ff61e)
 
-### Hetzner robot:
+### Hetzner robot dedicated server:
 
 If you have a hetzner dedicated server.
 
-#### Method 1 (cli rescue only):
+#### Method 1:
 
-* Start the server in rescue mode
+* In the hetzner dashboard go to the Rescue tab. **Select "Linux"** and activate.
 * Use the default imaging install method shown above, dont reboot.
 * Now we need to set the root password or add ssh keys:
  * `zpool import -R /mnt rpool` (first time this will auto install zfs tools)
@@ -128,7 +128,7 @@ If you have a hetzner dedicated server.
 
 This starts your harddisks as a qemu VM, with vnc access. Much nicer for testing/fixing stuff.
 
- * Start the server in vkvm mode.
+ * In the Hetzner dashboard go to the Rescue tab. **Select vKVM.** and activate.
  * Login to the ssh rescue environment on port 47772 (login as root and with the password hetzner gave you in their control panel)
  * Stop vkvm: `systemctl stop vkvm-startup` so your harddisk is accessible.
  * Use the default imaging install method shown above, dont reboot.
