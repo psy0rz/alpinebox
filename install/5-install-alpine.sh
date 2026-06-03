@@ -50,6 +50,8 @@ chroot $INSTALL_ROOT rc-update add sysctl default
 
 # chroot $INSTALL_ROOT rc-update add zfs-import default
 
+chroot $INSTALL_ROOT setup-devd mdevd
+
 # fstab
 cat >$INSTALL_ROOT/etc/fstab <<EOF
 tmpfs	/tmp	tmpfs	nosuid,nodev	0	0
