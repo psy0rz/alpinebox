@@ -1,0 +1,45 @@
+#!/bin/sh
+
+# Snapshot, upgrade and quick-reboot system. Rollback on failure.
+
+set -e
+
+
+
+zfs_snapshot() {
+    apk add py3-zfs-autobackup
+    zfs set autobackup:system_upgrade=true rpool/ROOT
+    zfs-autobackup system_upgrade --keep-source=3,1d3d
+}
+
+zfs_rollback_system() {
+    #rpool
+    LATEST=`zfs list -H -t snapshot -o name -S creation rpool/ROOT |head -n1` || true
+    if [ "$LATEST" ]; then
+        echo "ALPINEBOX: Rolling back to $LATEST"
+        zfs rollback $LATEST || true
+    fi
+}
+
+
+apk update 
+
+#are there updates?
+if apk list -u | grep . >/dev/null; then
+
+    zfs_snapshot
+
+    # try it:
+    if apk upgrade -a && apk upgrade -as; then
+        # ok, quick reboot
+        echo "ALPINEBOX: Upgrade OK, rebooting."
+        /root/alpinebox/quick-reboot
+    else
+        echo "ALPINEBOX: Upgrade FAILED!"
+        zfs_rollback_system
+        /root/alpinebox/quick-reboot force
+    fi
+else
+    echo "ALPINEBOX: No updates"
+fi
+

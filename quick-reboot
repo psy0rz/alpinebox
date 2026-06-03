@@ -1,0 +1,23 @@
+#!/bin/sh
+
+# Quick reboot system via kexec.
+
+# On older alpineboxes dont forget to:
+# zfs set org.zfsbootmenu:commandline="loglevel=4 kexec_load_disabled=0" rpool/ROOT
+# apk add kexec-tools
+
+
+if [ "$1" != "force" ]; then
+    echo "ALPINEBOX: Going to single usermode"
+    openrc single || exit 1
+fi
+
+echo "ALPINEBOX: Loading kernel"
+kexec -l /boot/vmlinuz-lts --initrd=/boot/initramfs-lts --reuse-cmdline
+
+echo "ALPINEBOX: Quick rebooting via kexec, bye"
+kexec -e
+
+#fallback
+echo "ALPINEBOX: Failed, falling back to regular reboot"
+reboot

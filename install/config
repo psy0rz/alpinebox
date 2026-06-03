@@ -19,6 +19,6 @@ echo "ALPINEBOX: INSTALL_SWAP_DEV  = $INSTALL_SWAP_DEV"
 echo "ALPINEBOX: INSTALL_ZPOOL_DEV = $INSTALL_ZPOOL_DEV"
 
 
-APPEND="loglevel=4"
+APPEND="loglevel=4 kexec_load_disabled=0"
 
 source versions
