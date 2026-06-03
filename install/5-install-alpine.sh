@@ -50,6 +50,7 @@ chroot $INSTALL_ROOT rc-update add sysctl default
 
 # chroot $INSTALL_ROOT rc-update add zfs-import default
 
+#NOTE: mdev mode is way too slow vs mdevd. (it will do hotplug fork flooding when having lots of zfs volumes)
 chroot $INSTALL_ROOT setup-devd mdevd
 
 # fstab
