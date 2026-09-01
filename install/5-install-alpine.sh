@@ -11,7 +11,7 @@ cp /etc/apk/repositories $INSTALL_ROOT/etc/apk
 
 apk --allow-untrusted -U --root $INSTALL_ROOT --initdb add \
     alpine-base \
-    linux-firmware-none linux-lts openssh-server openssh-client chrony acpid syslinux sgdisk partx mount zfs wireless-tools wpa_supplicant lsblk curl zfs-udev udev sysstat util-linux procps findutils coreutils grep sed gawk kexec-tools
+    linux-firmware-none linux-lts openssh-server openssh-client chrony acpid syslinux sgdisk partx mount zfs wireless-tools wpa_supplicant lsblk curl zfs-udev udev sysstat util-linux procps findutils coreutils grep sed gawk kexec-tools bash bash-completion 
 
 cp /etc/hostid $INSTALL_ROOT/etc
 cp /etc/resolv.conf $INSTALL_ROOT/etc
@@ -20,6 +20,9 @@ if [[ -e /etc/network/interfaces ]]; then
 else
     cp files/interfaces $INSTALL_ROOT/etc/network
 fi
+
+#bash as default shell, for better tab completion stuff (esp with docker)
+sed -i 's#/bin/sh#/bin/bash#' /etc/passwd 
 
 mount --rbind /dev $INSTALL_ROOT/dev
 mount --rbind /sys $INSTALL_ROOT/sys
