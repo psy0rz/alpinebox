@@ -1,6 +1,6 @@
 #!/bin/sh
 
-set -e
+set -xe
 
 source config
 echo "ALPINEBOX: Installing alpine in $INSTALL_ROOT"
