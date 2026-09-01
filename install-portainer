@@ -16,6 +16,11 @@ if ! [ -e .env ]; then
     cp .env-example .env
 fi
 
+if ! [ -e certs.yml ]; then
+    cp certs.yml.example certs.yml
+fi
+
+
 docker compose up -d 
 
 echo
