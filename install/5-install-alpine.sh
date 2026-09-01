@@ -11,7 +11,7 @@ cp /etc/apk/repositories $INSTALL_ROOT/etc/apk
 
 apk --allow-untrusted -U --root $INSTALL_ROOT --initdb add \
     alpine-base \
-    linux-firmware-none linux-lts openssh-server openssh-client chrony acpid syslinux sgdisk partx mount zfs wireless-tools wpa_supplicant lsblk curl zfs-udev sysstat util-linux procps findutils coreutils grep sed gawk kexec-tools bash bash-completion 
+    linux-firmware-none linux-lts openssh-server openssh-client chrony acpid syslinux sgdisk partx mount zfs wireless-tools wpa_supplicant lsblk curl zfs-udev sysstat util-linux procps findutils coreutils grep sed gawk kexec-tools bash bash-completion mdevd mdevd-openrc
 
 cp /etc/hostid $INSTALL_ROOT/etc
 cp /etc/resolv.conf $INSTALL_ROOT/etc
@@ -51,10 +51,10 @@ chroot $INSTALL_ROOT rc-update add chronyd default
 chroot $INSTALL_ROOT rc-update add zfs-mount default
 chroot $INSTALL_ROOT rc-update add sysctl default 
 
-# chroot $INSTALL_ROOT rc-update add zfs-import default
-
 #NOTE: mdev mode is way too slow vs mdevd. (it will do hotplug fork flooding when having lots of zfs volumes)
-chroot $INSTALL_ROOT setup-devd mdevd
+chroot $INSTALL_ROOT rc-update add mdevd sysinit 
+chroot $INSTALL_ROOT rc-update add mdevd-init sysinit 
+chroot $INSTALL_ROOT rc-update add hwdrivers sysinit 
 
 # fstab
 cat >$INSTALL_ROOT/etc/fstab <<EOF
