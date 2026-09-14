@@ -34,6 +34,7 @@ cp files/blacklist-gpu.conf $INSTALL_ROOT/etc/modprobe.d
 # zfs stuff
 echo "/etc/hostid" >>$INSTALL_ROOT/etc/mkinitfs/features.d/zfshost.files
 echo 'features="ata base keymap kms mmc nvme scsi usb virtio zfs zfshost"' >$INSTALL_ROOT/etc/mkinitfs/mkinitfs.conf
+sed -i '1i^zfs$ root:root 0666' $INSTALL_ROOT/etc/mdev.conf
 
 # rebuild initfs for above two things
 chroot $INSTALL_ROOT mkinitfs $(ls $INSTALL_ROOT/lib/modules)
