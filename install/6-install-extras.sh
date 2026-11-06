@@ -36,3 +36,9 @@ git remote add origin https://github.com/psy0rz/alpinebox.git -t master
 mkdir $INSTALL_ROOT/root/.ssh
 touch $INSTALL_ROOT/root/.ssh/authorized_keys
 
+########## ssh: only allow key based logins
+#put it at the top: sshd uses the first value it finds, and this keeps it outside any Match block
+SSHD_CONFIG=$INSTALL_ROOT/etc/ssh/sshd_config
+sed -i '/^[#[:space:]]*PasswordAuthentication[[:space:]]/d' $SSHD_CONFIG
+sed -i '1i PasswordAuthentication no' $SSHD_CONFIG
+
