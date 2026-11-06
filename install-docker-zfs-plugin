@@ -11,6 +11,8 @@ set -e
 #prepare zfs datasets
 zfs create -p -o mountpoint=/var/lib/docker rpool/var/lib/docker || true
 zfs create -p rpool/var/lib/docker/volumes || true
+#no atime updates on volumes (issue #20). explicitly set, also for existing installations
+zfs set atime=off relatime=off rpool/var/lib/docker/volumes
 zfs create -p -o mountpoint=none rpool/var/lib/docker/images || true
 
 #dependencies

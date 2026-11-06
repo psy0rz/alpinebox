@@ -19,9 +19,10 @@ zpool create \
     -O acltype=posixacl \
     -O compression=on \
     -o autoexpand=on \
+    -o autoreplace=on \
     -O dnodesize=auto \
     -O normalization=formD \
-    -O relatime=on \
+    -O relatime=off \
     -O atime=off \
     -O xattr=sa \
     -R $INSTALL_ROOT \

@@ -14,11 +14,14 @@ apk --allow-untrusted -U --root $INSTALL_ROOT --initdb add \
     linux-firmware-none linux-lts openssh-server openssh-client chrony acpid syslinux sgdisk partx mount zfs wireless-tools wpa_supplicant lsblk curl zfs-udev sysstat util-linux procps findutils coreutils grep sed gawk kexec-tools bash bash-completion mdevd mdevd-openrc
 
 cp /etc/hostid $INSTALL_ROOT/etc
-cp /etc/resolv.conf $INSTALL_ROOT/etc
+#only take over the network and dns config of a real installer environment.
+#when building the image in docker (github actions) the resolv.conf contains docker/azure stuff (issue #18)
 if [[ -e /etc/network/interfaces ]]; then
     cp /etc/network/interfaces $INSTALL_ROOT/etc/network
+    cp /etc/resolv.conf $INSTALL_ROOT/etc
 else
     cp files/interfaces $INSTALL_ROOT/etc/network
+    echo "# Will be filled in by DHCP" >$INSTALL_ROOT/etc/resolv.conf
 fi
 
 #bash as default shell, for better tab completion stuff (esp with docker)
@@ -50,6 +53,7 @@ chroot $INSTALL_ROOT rc-update add crond default
 chroot $INSTALL_ROOT rc-update add syslog default
 chroot $INSTALL_ROOT rc-update add chronyd default
 chroot $INSTALL_ROOT rc-update add zfs-mount default
+chroot $INSTALL_ROOT rc-update add zfs-zed default
 chroot $INSTALL_ROOT rc-update add sysctl default 
 
 #NOTE: mdev mode is way too slow vs mdevd. (it will do hotplug fork flooding when having lots of zfs volumes)
