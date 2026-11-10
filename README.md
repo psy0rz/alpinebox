@@ -27,135 +27,135 @@ For this reason all our boxes run Alpine and just auto-upgrade and reboot every 
 
 # Installing 
 
-Installation by just writing the official image to the disk is the easiest way:
+The easiest procedure is to write the official image to the disk.
 
-* Boot any Linux distro via CD, USB. Or use a rescue-boot if you use some kind of VPS hosting provider. (example screenshot below)
-* It doesn't matter if this linux distro has UEFI or legacy boot, the image contains both and should always boot. (you can even switch between uefi and legacy afterwards)
+* Boot a Linux distribution from a CD or a USB drive. If you use a VPS provider, use its rescue boot (refer to the example screenshot below).
+* The boot mode of this Linux distribution (UEFI or legacy) is not important. The image contains the two boot modes and always boots. You can also change between UEFI and legacy boot after the installation.
 * Download the imager:
 ```
 # wget https://boot.datux.nl/image
 ```
-*NOTE: This is just a redirect to https://raw.githubusercontent.com/psy0rz/alpinebox/master/install/installimage.sh*
+*NOTE: This URL goes to https://raw.githubusercontent.com/psy0rz/alpinebox/master/install/installimage.sh*
 
-* Start the imager and specify your harddisk:
+* Start the imager. Specify your hard disk:
 ```
 # bash image /dev/sda
 ```
-This should download and write the image to disk, and you're basically done :)
+The imager downloads the image and writes it to the disk. The installation is then complete.
 
-You can now reboot, but for some VPS providers a powercycle is needed.
+Reboot the system. Some VPS providers need a power cycle.
 
-If you have trouble installing. see [VPS provider tips](#vps-provider-tips)
+If you have problems during the installation, refer to [VPS provider tips](#vps-provider-tips).
 
 ## Login
 
-There is no root-password for console logins. However, for ssh you will need to add your keys. 
+Console logins do not have a root password. For SSH logins, you must add your keys. 
 
 ## Growing the disk
 
-Since it's an image, you will need to grow the partition and zfs disk:
+The image has a fixed size. Thus, you must increase the size of the partition and the ZFS disk:
 ![image](https://github.com/psy0rz/alpinebox/assets/1179017/7aced4e6-bc15-4be0-803c-69f5717f04af)
 
-Just run `grow-disks` script in /root/alpinebox, and it should be handled automatically, without needing a reboot. 
+Run the `grow-disks` script in /root/alpinebox. The script does this procedure automatically. You do not have to reboot. 
 
-**Do this as soon as possible, since it's a somewhat risky operation** 
+**CAUTION: DO THIS PROCEDURE IMMEDIATELY AFTER THE INSTALLATION. THIS PROCEDURE CAN CAUSE DAMAGE TO THE DATA ON THE DISK.** 
 
 
 ## Adding a disk
 
-To add a disk to the zpool as a mirror, just run the `add-disk` script in /root/alpinebox 
+To add a disk to the zpool as a mirror, run the `add-disk` script in /root/alpinebox. 
 
-This will also make sure that the disk has the correct partitioning, MBR/UEFI and ZfsBootmenu stuff, so that if the first disk completely fails, you can still boot from this one.
+The script also partitions the disk and installs MBR, UEFI and ZfsBootmenu on it. If the first disk fails, you can then boot from this disk.
 
-Make sure you remove any non-ONLINE disks from the pool first.
+Before you add the disk, remove all disks that are not ONLINE from the pool.
 
 ## Backups
 
-To make backups via ZFS replication, check out my other project: https://pypi.org/project/zfs-autobackup/
+To make backups with ZFS replication, use my other project: https://pypi.org/project/zfs-autobackup/
 
 ## Safe updates
 
-Now everytime you need to do a bunch of Alpine upgrades, just run something like: `zfs snapshot rpool/ROOT@upgrades1`
+Before you do Alpine upgrades, make a snapshot. For example: `zfs snapshot rpool/ROOT@upgrades1`
 
-If the upgrade fails you can rollback via the ZfsBootmenu.
+If the upgrade fails, use ZfsBootmenu to roll back to the snapshot.
 
 
 # Installing docker or portainer
 
-After installing alpinebox, go to /root/alpinebox.
+After you install alpinebox, go to /root/alpinebox.
 
-Here you will find various install scripts.
+This directory contains install scripts.
 
-To install docker, just run `./install-docker`
+To install docker, run `./install-docker`
 
-If you also want portainer, run `./install-portainer` instead.
+To install docker and portainer, run `./install-portainer`.
 
-This will give you further instructions on what to do after it's done.
+When the script is complete, it shows the subsequent steps.
 
 # Installing firewall
 
 Go to /root/alpinebox and run `./install-firewall`
 
-This will install a minimal firewall that only allows ssh from trusted IP addresses (via ipsets in /etc/ipset.d/).
+This script installs a minimal firewall. The firewall accepts SSH connections only from trusted IP addresses. You set these addresses with ipsets in /etc/ipset.d/.
 
-This will not interfere with docker. The script will provide you with more info after running it.
+The firewall does not interfere with docker. When the script is complete, it shows more information.
 
 # VPS provider tips:
 
-Here are some specific VPS provider tips on how to get into an environment to start the installer:
+This section tells you how to start a rescue environment at some VPS providers. You then use this environment to start the installer.
 
 ### Hetzner cloud VM: 
 
-If you have a hetzner VM.
+Use this procedure for a Hetzner VM.
 
-Via the Hetzner [console](https://console.hetzner.cloud/) request a Rescue boot. See [this screenshot.](https://github.com/psy0rz/alpinebox/assets/1179017/b3553522-8305-4cc2-86c2-6b86fd8ff61e)
+In the Hetzner [console](https://console.hetzner.cloud/), request a rescue boot. Refer to [this screenshot.](https://github.com/psy0rz/alpinebox/assets/1179017/b3553522-8305-4cc2-86c2-6b86fd8ff61e)
 
 ### Hetzner robot dedicated server:
 
-If you have a hetzner dedicated server.
+Use these procedures for a Hetzner dedicated server.
 
 #### Method 1:
 
-* In the hetzner dashboard go to the Rescue tab. **Select "Linux"** and activate.
-* Use the default imaging install method shown above, dont reboot.
-* Now we need to set the root password or add ssh keys:
- * `zpool import -R /mnt rpool` (first time this will auto install zfs tools)
+* In the Hetzner dashboard, go to the Rescue tab. **Select "Linux"** and activate it.
+* Do the default image installation procedure above. Do not reboot.
+* Get access to the installed system:
+ * `zpool import -R /mnt rpool` (The first time, this command installs the ZFS tools automatically.)
  * `chroot /mnt`
-* Setup root password or add ssh keys.
-* Exit and reboot
+* Set the root password or add SSH keys.
+* Exit and reboot.
 
 #### Method 2 (hetzner vkvm):
 
-This starts your harddisks as a qemu VM, with vnc access. Much nicer for testing/fixing stuff.
+This method starts your hard disks as a QEMU VM with VNC access. This method is better for tests and repairs.
 
- * In the Hetzner dashboard go to the Rescue tab. **Select vKVM.** and activate.
- * Login to the ssh rescue environment on port 47772 (login as root and with the password hetzner gave you in their control panel)
- * Stop vkvm: `systemctl stop vkvm-startup` so your harddisk is accessible.
- * Use the default imaging install method shown above, dont reboot.
- * Start vkvm: `systemctl start vkvm-startup`
- * Server should boot, and be accessible via webinterface at `https://x.x.x.x:47773/` (hetzners control panel tells you this)
- * Login and add ssh keys or set root pass.
- * Now you can reboot the rescue shell and make the server actually boot by itself.
+ * In the Hetzner dashboard, go to the Rescue tab. **Select vKVM** and activate it.
+ * Log in to the SSH rescue environment on port 47772. Log in as root with the password from the Hetzner control panel.
+ * Stop vKVM to get access to your hard disk: `systemctl stop vkvm-startup`
+ * Do the default image installation procedure above. Do not reboot.
+ * Start vKVM: `systemctl start vkvm-startup`
+ * The server boots. You can access it with the web interface at `https://x.x.x.x:47773/`. The Hetzner control panel shows this address.
+ * Log in. Add SSH keys or set the root password.
+ * Reboot the rescue shell. The server then boots from its own disk.
 
 #### UEFI boot problems in vkvm
 
-Sometimes it seems to get stuck in a UEFI boot loop. When this is the case, simply disable it like this:
+Sometimes the system stays in a UEFI boot loop. If this occurs, disable UEFI:
 
  * Edit `/opt/vkvm/startqemu`
  * Remove `-drive if=pflash,format=raw,file=/usr/share/OVMF/OVMF_CODE.fd`
  * `systemctl restart vkvm-startup`
 
-This should boot it in bios-mode without any problems.
+The system then boots in BIOS mode.
 
 ### TransIP
 
-Open the console screen in popup-mode and choose to boot linux in Rescue mode. See [this screenshot.](https://github.com/psy0rz/alpinebox/assets/1179017/0be92242-9ba8-4c2b-99ea-ed6add088a9a)
+Open the console screen in popup mode. Select the Linux rescue boot. Refer to [this screenshot.](https://github.com/psy0rz/alpinebox/assets/1179017/0be92242-9ba8-4c2b-99ea-ed6add088a9a)
 
-Once you've entered the rescue environment, you can use the Alpinebox installer mentioned above.
+In the rescue environment, use the Alpinebox installer above.
 
-Requires a power cycle of the VM, not just a reboot, to get it working.
+After the installation, do a power cycle of the VM. A reboot is not sufficient.
 
 # More info
 
-Based on this excellent tutorial: https://docs.zfsbootmenu.org/en/v2.3.x/guides/alpine/uefi.html
+This installer uses this tutorial as a base: https://docs.zfsbootmenu.org/en/v2.3.x/guides/alpine/uefi.html
 
