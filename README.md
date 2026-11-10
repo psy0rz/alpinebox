@@ -92,6 +92,32 @@ To install docker and portainer, run `./install-portainer`.
 
 When the script is complete, it shows the subsequent steps.
 
+## Portainer templates
+
+The `install-portainer` script uses my [portainer-templates](https://github.com/psy0rz/portainer-templates) project. The script clones this project to /root/portainer-templates and starts its core stack.
+
+The core stack contains these components:
+
+* **Traefik**: A reverse proxy. It gets free SSL certificates from Let's Encrypt or ZeroSSL. Thus, you can run many web applications on one server.
+* **Portainer**: The Docker web GUI.
+* **Watchtower**: It updates the images each night.
+* **Portal**: It shows the server manager overview page.
+
+To complete the installation:
+
+1. Go to /root/portainer-templates/core/.
+2. Edit the `.env` file. Set `DOMAIN` and the Let's Encrypt or ZeroSSL settings.
+3. Run `docker compose up -d`.
+4. Log in to Portainer at `https://<DOMAIN>/server-manager/portainer/`. The default login is admin/admin.
+5. In Portainer, go to Settings. In the App templates field, enter this URL: <https://raw.githubusercontent.com/psy0rz/portainer-templates/main/templates.json>
+6. Go to App templates and create a stack.
+
+**CAUTION: CHANGE THE ADMIN PASSWORD AFTER THE FIRST LOGIN.**
+
+For more information, refer to the [portainer-templates README](https://github.com/psy0rz/portainer-templates).
+
+To install portainer, zfs-autobackup and the firewall together, run `./install-portainer-stack`.
+
 # Installing firewall
 
 Go to /root/alpinebox and run `./install-firewall`
