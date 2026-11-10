@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="26 26 148 148" width="256" height="256">
+  <title>Alpinebox</title>
+  <defs>
+    <clipPath id="left-face-clip"><polygon points="40,65 100,100 100,170 40,135"/></clipPath>
+    <clipPath id="right-face-clip"><polygon points="100,100 160,65 160,135 100,170"/></clipPath>
+    <path id="mountain-range" d="M30,128 L66,90 L88,116 L108,102 L120,110 L138,92 L170,121 L170,180 L30,180 Z"/>
+    <path id="snow-caps" d="M58.2,99 L61,97 L66,101 L70,97.5 L73.6,99 L66,90 Z
+                             M130,100 L134,98 L138,101.5 L142,98 L146.8,100 L138,92 Z
+                             M100.9,107 L104,105.5 L108,107.5 L111.5,105.6 L115.5,107 L108,102 Z"/>
+  </defs>
+
+  <!-- left face: sky, mountains, snow -->
+  <polygon points="40,65 100,100 100,170 40,135" fill="#7CC4E8"/>
+  <g clip-path="url(#left-face-clip)">
+    <use href="#mountain-range" fill="#26476B"/>
+    <use href="#snow-caps" fill="#FFFFFF"/>
+  </g>
+
+  <!-- right face: darker sky, mountains, snow -->
+  <polygon points="100,100 160,65 160,135 100,170" fill="#4F9FCB"/>
+  <g clip-path="url(#right-face-clip)">
+    <use href="#mountain-range" fill="#1A3352"/>
+    <use href="#snow-caps" fill="#D9E8F3"/>
+  </g>
+
+  <!-- top face: lid -->
+  <polygon points="100,30 160,65 100,100 40,65" fill="#F2F7FB"/>
+  <polyline points="70,47.5 130,82.5" fill="none" stroke="#C9DBE8" stroke-width="2.5" stroke-linecap="round"/>
+
+  <!-- edges -->
+  <g fill="none" stroke="#12233A" stroke-width="4" stroke-linejoin="round" stroke-linecap="round">
+    <polygon points="100,30 160,65 160,135 100,170 40,135 40,65"/>
+    <polyline points="40,65 100,100 160,65"/>
+    <line x1="100" y1="100" x2="100" y2="170"/>
+  </g>
+</svg>
