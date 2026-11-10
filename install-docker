@@ -11,7 +11,7 @@ echo "ALPINEBOX: Installing Docker"
 
 
 #install
-apk add  docker docker-bash-completion docker-cli-compose bash-completion
+apk add  docker docker-bash-completion docker-cli-compose bash-completion apache2-utils
 
 #configuration
 mkdir -p /etc/docker
