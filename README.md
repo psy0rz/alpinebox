@@ -10,7 +10,7 @@ Since installing Alpine with ZFS and ZfsBootmenu needs a whole tutorial with man
 * Uses the excellent [ZFS](https://openzfs.org/wiki/Main_Page) filesystem.  
 * [ZFSBootMenu](https://docs.zfsbootmenu.org/) as bootloader, which allows you to rollback in case of failed upgrades.
 * After installing it can boot in both BIOS mode and UEFI mode. 
-* Perfect for running docker.
+* Optional [automatic updates](#automatic-updates): snapshot, upgrade, and a fast kexec "quick reboot". The system rolls back automatically if the upgrade fails.
 * Optional "batteries included" Docker server: one script (`./install-portainer-stack`) gives you a complete, ready-to-use setup:
   * [Portainer](https://www.portainer.io/) web GUI with a collection of ready-made [app templates](https://github.com/psy0rz/portainer-templates).
   * [Traefik](https://traefik.io/) reverse proxy with automatic SSL certificates, to host many web applications on one server.
@@ -85,6 +85,54 @@ To make backups with ZFS replication, use my other project: https://pypi.org/pro
 Before you do Alpine upgrades, make a snapshot. For example: `zfs snapshot rpool/ROOT@upgrades1`
 
 If the upgrade fails, use ZfsBootmenu to roll back to the snapshot.
+
+## Automatic updates
+
+The `auto-update` script in /root/alpinebox does the upgrade procedure automatically. The script does these steps:
+
+1. It updates the package index. If there are no new packages, the script stops.
+2. It makes a snapshot of rpool/ROOT with [zfs-autobackup](https://github.com/psy0rz/zfs_autobackup). It keeps the 3 latest snapshots, and one snapshot each day for 3 days.
+3. It upgrades all packages.
+4. If the upgrade is successful, it does a quick reboot into the new system.
+5. If the upgrade fails, it rolls back rpool/ROOT to the snapshot and does a quick reboot.
+
+**NOTE: The snapshot contains only rpool/ROOT. The script does not roll back other datasets, for example your Docker data.**
+
+To run the script manually:
+```
+# /root/alpinebox/auto-update
+```
+
+To run the script each week, add a cron job. Run `crontab -e` and add this line:
+```
+0 4 * * 0 /root/alpinebox/auto-update >> /var/log/auto-update.log 2>&1
+```
+This line runs the script each Sunday at 04:00. The crond service is enabled by default.
+
+If the system does not boot correctly after an upgrade, use ZfsBootmenu to roll back to the latest `system_upgrade-...` snapshot.
+
+### Quick reboot
+
+The `auto-update` script uses the `quick-reboot` script to restart the system. This script does not do a full reboot. It uses [kexec](https://en.wikipedia.org/wiki/Kexec) to load the new kernel directly from the running system. Thus, the BIOS or UEFI firmware, the hardware checks and ZfsBootmenu are skipped. On physical servers this makes the reboot much faster, because these servers often need minutes for the firmware.
+
+The `quick-reboot` script does these steps:
+
+1. It changes the system to single user mode. This stops all services correctly.
+2. It loads the kernel and the initramfs from /boot.
+3. It starts the new kernel.
+
+If kexec fails, the script does a usual reboot.
+
+You can also use `quick-reboot` manually:
+```
+# /root/alpinebox/quick-reboot
+```
+
+**NOTE: On older alpineboxes, kexec is not enabled. To enable it, run these commands:**
+```
+# zfs set org.zfsbootmenu:commandline="loglevel=4 kexec_load_disabled=0" rpool/ROOT
+# apk add kexec-tools
+```
 
 
 # Installing docker or portainer
