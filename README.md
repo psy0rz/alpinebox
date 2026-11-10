@@ -11,6 +11,14 @@ Since installing Alpine with ZFS and ZfsBootmenu needs a whole tutorial with man
 * [ZFSBootMenu](https://docs.zfsbootmenu.org/) as bootloader, which allows you to rollback in case of failed upgrades.
 * After installing it can boot in both BIOS mode and UEFI mode. 
 * Perfect for running docker.
+* Optional "batteries included" Docker server: one script (`./install-portainer-stack`) gives you a complete, ready-to-use setup:
+  * [Portainer](https://www.portainer.io/) web GUI with a collection of ready-made [app templates](https://github.com/psy0rz/portainer-templates).
+  * [Traefik](https://traefik.io/) reverse proxy with automatic SSL certificates, to host many web applications on one server.
+  * Nightly automatic image updates with Watchtower.
+  * ZFS snapshots and replication backups with [zfs-autobackup](https://github.com/psy0rz/zfs_autobackup).
+  * A minimal firewall that does not interfere with Docker.
+
+  Refer to [Installing docker or portainer](#installing-docker-or-portainer).
 * Also easy to install at VPS providers that do not provide an Alpine installer.
 * Install time is about 1 minute.
 
