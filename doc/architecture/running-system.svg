@@ -1,0 +1,126 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="436" viewBox="0 0 960 436" role="img" aria-label="Layer stack: app stacks over the Hostbox core stack over Docker over Alpine over the rpool ZFS pool. Web traffic enters through Traefik, SSH only from admin IPs. App volumes, Docker image layers and the root filesystem each live in their own ZFS dataset.">
+  <style>
+text { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif; }
+.t { font-size: 13px; font-weight: 600; }
+.s { font-size: 11.5px; }
+.m { font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace; font-size: 12px; font-weight: 500; }
+.lane { font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace; font-size: 11px; letter-spacing: .08em; }
+.lbl, .lbl-acc { font-size: 11px; font-style: italic; }
+.chip-t { font-size: 11.5px; font-weight: 500; }
+.b, .b-plain { stroke-width: 1.25; }
+.b-acc, .b-fail, .b-ok { stroke-width: 1.5; }
+.chip, .chip-acc { stroke-width: 1; }
+.a, .a-fail { fill: none; stroke-width: 1.5; }
+.a-acc { fill: none; stroke-width: 1.75; }
+.dash { stroke-dasharray: 4 4; }
+.bg { fill: #F2F7FB; }
+text { fill: #12233A; }
+.s, .lane, .lbl { fill: #4A6380; }
+.lbl-acc { fill: #2F7FB0; }
+.b, .chip { fill: #FFFFFF; stroke: #B9CEDF; }
+.b-plain { fill: #F2F7FB; stroke: #B9CEDF; }
+.b-acc, .chip-acc { fill: #DCEDF8; stroke: #2F7FB0; }
+.b-fail { fill: #FBE7E1; stroke: #B5482F; }
+.b-ok { fill: #DFF2E8; stroke: #2E7D5B; }
+.a { stroke: #4A6380; }
+.a-acc { stroke: #2F7FB0; }
+.a-fail { stroke: #B5482F; }
+.ah { fill: #4A6380; }
+.ah-acc { fill: #2F7FB0; }
+.ah-fail { fill: #B5482F; }
+@media (prefers-color-scheme: dark) {
+  .bg { fill: #0E1B2C; }
+  text { fill: #D9E8F3; }
+  .s, .lane, .lbl { fill: #8FA9C2; }
+  .lbl-acc { fill: #7CC4E8; }
+  .b, .chip { fill: #15263C; stroke: #2D4866; }
+  .b-plain { fill: #0E1B2C; stroke: #2D4866; }
+  .b-acc, .chip-acc { fill: #1A3A55; stroke: #7CC4E8; }
+  .b-fail { fill: #3D2320; stroke: #F08A6C; }
+  .b-ok { fill: #173528; stroke: #6CC79A; }
+  .a { stroke: #8FA9C2; }
+  .a-acc { stroke: #7CC4E8; }
+  .a-fail { stroke: #F08A6C; }
+  .ah { fill: #8FA9C2; }
+  .ah-acc { fill: #7CC4E8; }
+  .ah-fail { fill: #F08A6C; }
+}
+</style>
+  <rect class="bg" x="0" y="0" width="960" height="436" rx="6"/>
+          <defs>
+            <marker id="m3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ah" d="M0,0 L10,5 L0,10 z"/></marker>
+            <marker id="m3a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ah-acc" d="M0,0 L10,5 L0,10 z"/></marker>
+          </defs>
+
+          <!-- external actors -->
+          <rect class="b" x="20" y="109" width="120" height="48" rx="4"/>
+          <text class="t" x="80" y="129" text-anchor="middle">Web visitors</text>
+          <text class="s" x="80" y="146" text-anchor="middle">:80 / :443</text>
+
+          <rect class="b" x="20" y="277" width="120" height="48" rx="4"/>
+          <text class="t" x="80" y="297" text-anchor="middle">Admin</text>
+          <text class="s" x="80" y="314" text-anchor="middle">SSH :22, key only</text>
+
+          <!-- L5 apps -->
+          <rect class="b" x="180" y="20" width="410" height="60" rx="4"/>
+          <text class="t" x="196" y="44">App stacks</text>
+          <text class="s" x="196" y="64">WordPress · Magento · Nextcloud · Grav · MariaDB …</text>
+
+          <!-- L4 hostbox -->
+          <rect class="b" x="180" y="92" width="410" height="88" rx="4"/>
+          <text class="t" x="574" y="112" text-anchor="end">Hostbox core stack</text>
+          <rect class="chip-acc" x="196" y="122" width="88" height="22" rx="3"/><text class="chip-t" x="240" y="137" text-anchor="middle">Traefik</text>
+          <rect class="chip" x="292" y="122" width="88" height="22" rx="3"/><text class="chip-t" x="336" y="137" text-anchor="middle">Authelia</text>
+          <rect class="chip" x="388" y="122" width="88" height="22" rx="3"/><text class="chip-t" x="432" y="137" text-anchor="middle">CrowdSec</text>
+          <rect class="chip" x="484" y="122" width="88" height="22" rx="3"/><text class="chip-t" x="528" y="137" text-anchor="middle">Portainer</text>
+          <rect class="chip" x="196" y="150" width="88" height="22" rx="3"/><text class="chip-t" x="240" y="165" text-anchor="middle">VictoriaLogs</text>
+          <rect class="chip" x="292" y="150" width="88" height="22" rx="3"/><text class="chip-t" x="336" y="165" text-anchor="middle">Watchtower</text>
+          <rect class="chip" x="388" y="150" width="88" height="22" rx="3"/><text class="chip-t" x="432" y="165" text-anchor="middle">Portal</text>
+          <line class="a-acc" x1="240" y1="122" x2="240" y2="82" marker-end="url(#m3a)"/>
+          <text class="lbl-acc" x="248" y="106">routes by Host, TLS</text>
+
+          <!-- L3 docker -->
+          <rect class="b" x="180" y="192" width="410" height="56" rx="4"/>
+          <text class="t" x="196" y="214">Docker</text>
+          <text class="s" x="196" y="234">storage-driver zfs · docker-zfs-plugin for volumes</text>
+
+          <!-- L2 alpine -->
+          <rect class="b" x="180" y="260" width="410" height="84" rx="4"/>
+          <text class="t" x="574" y="280" text-anchor="end">Alpine Linux · OpenRC</text>
+          <rect class="chip" x="196" y="290" width="88" height="22" rx="3"/><text class="chip-t" x="240" y="305" text-anchor="middle">sshd</text>
+          <rect class="chip" x="292" y="290" width="88" height="22" rx="3"/><text class="chip-t" x="336" y="305" text-anchor="middle">iptables</text>
+          <rect class="chip" x="388" y="290" width="88" height="22" rx="3"/><text class="chip-t" x="432" y="305" text-anchor="middle">crond</text>
+          <rect class="chip" x="484" y="290" width="88" height="22" rx="3"/><text class="chip-t" x="528" y="305" text-anchor="middle">chronyd</text>
+          <rect class="chip" x="196" y="318" width="88" height="22" rx="3"/><text class="chip-t" x="240" y="333" text-anchor="middle">zfs-zed</text>
+          <rect class="chip" x="292" y="318" width="88" height="22" rx="3"/><text class="chip-t" x="336" y="333" text-anchor="middle">mdevd</text>
+          <rect class="chip" x="388" y="318" width="88" height="22" rx="3"/><text class="chip-t" x="432" y="333" text-anchor="middle">acpid</text>
+
+          <!-- entry arrows, drawn after the layers so the layer boxes do not cover the arrowheads -->
+          <line class="a-acc" x1="140" y1="133" x2="194" y2="133" marker-end="url(#m3a)"/>
+          <line class="a" x1="140" y1="301" x2="194" y2="301" marker-end="url(#m3)"/>
+
+          <!-- L1 pool -->
+          <rect class="b-acc" x="180" y="356" width="760" height="64" rx="4"/>
+          <text class="m" x="196" y="381">rpool</text>
+          <text class="s" x="196" y="402">ZFS on p4 · daily zfs-autobackup snapshots (autobackup:backup=true) · mirror with add-disk</text>
+
+          <!-- datasets -->
+          <rect class="b" x="650" y="20" width="290" height="60" rx="4"/>
+          <text class="m" x="666" y="44">rpool/var/lib/docker/volumes/*</text>
+          <text class="s" x="666" y="64">one dataset per Docker volume</text>
+
+          <rect class="b" x="650" y="192" width="290" height="56" rx="4"/>
+          <text class="m" x="666" y="214">rpool/var/lib/docker/images</text>
+          <text class="s" x="666" y="234">image layers · not backed up</text>
+
+          <rect class="b" x="650" y="274" width="290" height="56" rx="4"/>
+          <text class="m" x="666" y="296">rpool/ROOT</text>
+          <text class="s" x="666" y="316">/ · @fresh-install · system_upgrade-*</text>
+
+          <line class="a" x1="590" y1="50" x2="648" y2="50" marker-end="url(#m3)"/>
+          <text class="lbl" x="619" y="43" text-anchor="middle">data</text>
+          <line class="a" x1="590" y1="220" x2="648" y2="220" marker-end="url(#m3)"/>
+          <text class="lbl" x="619" y="213" text-anchor="middle">layers</text>
+          <line class="a" x1="590" y1="302" x2="648" y2="302" marker-end="url(#m3)"/>
+          <text class="lbl" x="619" y="295" text-anchor="middle">mounts /</text>
+        </svg>

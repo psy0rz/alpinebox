@@ -40,7 +40,7 @@ The image is a complete Alpinebox system. It contains Alpine Linux, the ZFS root
 
 **CAUTION: THE IMAGER DELETES ALL DATA ON THE DISK THAT YOU SPECIFY.**
 
-1. Boot a Linux distribution from a CD or a USB drive. If you use a VPS provider, use its rescue boot. Refer to [VPS provider tips](#vps-provider-tips).
+1. Boot a Linux distribution from a CD or a USB drive. If you use a VPS provider, use its rescue boot. Refer to [VPS provider tips](VPS-PROVIDERS.md).
 
    The boot mode of this Linux distribution (UEFI or legacy) is not important. The image contains the two boot modes and always boots. You can also change between UEFI and legacy boot after the installation.
 
@@ -58,7 +58,7 @@ The image is a complete Alpinebox system. It contains Alpine Linux, the ZFS root
 
 4. Reboot the system. Some VPS providers need a power cycle.
 
-If you have problems during the installation, refer to [VPS provider tips](#vps-provider-tips).
+If you have problems during the installation, refer to [VPS provider tips](VPS-PROVIDERS.md).
 
 ## Login
 
@@ -71,8 +71,6 @@ Console logins do not have a root password. For SSH logins, you must add your ke
 The image has a fixed size. Thus, you must increase the size of the partition and the ZFS disk.
 
 Run the `grow-disks` script in /root/alpinebox. The script does this procedure automatically. You do not have to reboot.
-
-![image](https://github.com/psy0rz/alpinebox/assets/1179017/7aced4e6-bc15-4be0-803c-69f5717f04af)
 
 ## Adding a disk
 
@@ -201,61 +199,101 @@ This script installs a minimal firewall. The firewall accepts SSH connections on
 
 The firewall does not interfere with Docker. When the script is complete, it shows more information.
 
-# VPS provider tips
+# Architecture
 
-This section tells you how to start a rescue environment at some VPS providers. You then use this environment to start the installer.
+This section shows how Alpinebox works: how the image is built, how the disk boots, what runs on a finished server, and how the server upgrades and rolls back by itself.
 
-## Hetzner Cloud VM
+## From release to running disk
 
-In the Hetzner [console](https://console.hetzner.cloud/), request a rescue boot. Refer to [this screenshot](https://github.com/psy0rz/alpinebox/assets/1179017/b3553522-8305-4cc2-86c2-6b86fd8ff61e).
+![Build and install flow](doc/architecture/build-and-install.svg)
 
-In the rescue environment, use the [installation procedure](#installing).
+When a release is created on GitHub, GitHub Actions builds the disk image:
 
-## Hetzner Robot dedicated server
+1. `devtools/docker/build.sh` starts a privileged `alpine` container.
+2. In the container, `devtools/createimage.sh` creates a 3 GB loop device.
+3. `createimage.sh` runs the install scripts `install/1-prepare.sh` to `install/7-cleanup.sh` on the loop device. Step 7 makes the snapshot `rpool/ROOT@fresh-install`.
+4. The workflow compresses the image and uploads it as the release asset `alpine.img.gz`.
 
-Use one of these procedures for a Hetzner dedicated server.
+On the target server, `installimage.sh` downloads this image and writes it directly to the disk. Thus, every server gets the same tested image.
 
-### Method 1: Linux rescue system
+The older procedure, `install/bootstrap.sh` from an Alpine ISO, runs the same seven install scripts directly on the disk of the server.
 
-1. In the Hetzner dashboard, go to the Rescue tab. **Select "Linux"** and activate it.
-2. Do the [installation procedure](#installing). Do not reboot.
-3. Get access to the installed system:
-   * `zpool import -R /mnt rpool` (The first time, this command installs the ZFS tools automatically.)
-   * `chroot /mnt`
-4. Set the root password or add SSH keys.
-5. Exit and reboot.
+## Disk layout and boot chain
 
-### Method 2: Hetzner vKVM
+![Disk layout and boot chain](doc/architecture/disk-and-boot.svg)
 
-This method starts your hard disks as a QEMU VM with VNC access. This method is better for tests and repairs.
+The disk has a GPT partition table with four partitions:
 
-1. In the Hetzner dashboard, go to the Rescue tab. **Select vKVM** and activate it.
-2. Log in to the SSH rescue environment on port 47772. Log in as root with the password from the Hetzner control panel.
-3. Stop vKVM to get access to your hard disk: `systemctl stop vkvm-startup`
-4. Do the [installation procedure](#installing). Do not reboot.
-5. Start vKVM: `systemctl start vkvm-startup`
-6. The server boots. You can access it with the web interface at `https://x.x.x.x:47773/`. The Hetzner control panel shows this address.
-7. Log in. Add SSH keys or set the root password.
-8. Reboot the rescue shell. The server then boots from its own disk.
+| Partition | Size         | Contents                                         |
+|-----------|--------------|--------------------------------------------------|
+| p1        | 1 MB         | BIOS boot partition                              |
+| p2        | 256 MB       | EFI system partition with ZFSBootMenu and syslinux |
+| p3        | 1 GB         | Swap                                             |
+| p4        | Rest of disk | ZFS pool `rpool`                                 |
 
-#### UEFI boot problems in vKVM
+The two boot modes start the same ZFSBootMenu on p2:
 
-Sometimes the system stays in a UEFI boot loop. If this occurs, disable UEFI:
+* **Legacy BIOS**: The MBR (`gptmbr.bin`) starts extlinux on p2, because p2 has the legacy-bootable attribute. Extlinux then starts ZFSBootMenu.
+* **UEFI**: The firmware starts `EFI/BOOT/BOOTX64.EFI` on p2. This file is ZFSBootMenu.
 
-1. Edit `/opt/vkvm/startqemu`.
-2. Remove `-drive if=pflash,format=raw,file=/usr/share/OVMF/OVMF_CODE.fd`.
-3. Run `systemctl restart vkvm-startup`.
+ZFSBootMenu boots `rpool/ROOT` or a snapshot of it. It loads the Alpine kernel from `/boot` in `rpool/ROOT` with kexec. It reads the kernel command line from the ZFS property `org.zfsbootmenu:commandline` on `rpool/ROOT`.
 
-The system then boots in BIOS mode.
+The `quick-reboot` script uses kexec to start the new kernel directly from the running system. This skips the firmware and ZFSBootMenu.
 
-## TransIP
+The `add-disk` script does the partitioning and the boot loader installation again on a second disk. It then attaches p4 of that disk to `rpool` as a mirror. Thus, the server can boot from each of the two disks.
 
-Open the console screen in popup mode. Select the Linux rescue boot. Refer to [this screenshot](https://github.com/psy0rz/alpinebox/assets/1179017/0be92242-9ba8-4c2b-99ea-ed6add088a9a).
+## A running Hostbox server
 
-In the rescue environment, use the [installation procedure](#installing).
+![Running Hostbox server](doc/architecture/running-system.svg)
 
-After the installation, do a power cycle of the VM. A reboot is not sufficient.
+A server with Hostbox has these layers, from bottom to top:
 
-# More info
+1. **rpool**: The ZFS pool on p4. `zfs-autobackup` makes a snapshot of all datasets each day.
+2. **Alpine Linux**: OpenRC starts the system services, for example sshd, iptables, crond and chronyd.
+3. **Docker**: Docker uses the ZFS storage driver for images. The Docker ZFS volume plugin creates a ZFS dataset for each volume.
+4. **Hostbox core stack**: Traefik, Authelia, CrowdSec, Portainer, VictoriaLogs, Watchtower and the portal.
+5. **App stacks**: The sites that you create from the Portainer templates.
 
-This installer uses this tutorial as a base: https://docs.zfsbootmenu.org/en/v2.3.x/guides/alpine/uefi.html
+Each type of data has its own ZFS dataset:
+
+| Dataset                          | Contents                     | Backup |
+|----------------------------------|------------------------------|--------|
+| `rpool/ROOT`                     | The root file system         | Yes    |
+| `rpool/var/lib/docker/images`    | Docker image layers          | No     |
+| `rpool/var/lib/docker/volumes/*` | One dataset per Docker volume | Yes    |
+
+Thus, you can snapshot, back up and move each volume separately.
+
+Traffic goes into the server like this:
+
+* Web traffic on ports 80 and 443 goes to Traefik. Traefik routes each request to the correct app stack by its host name. Authelia protects all admin interfaces.
+* SSH on port 22 is accepted only from the IP addresses in the `admins-ipv4` and `admins-ipv6` ipsets. The firewall drops all other new incoming connections.
+
+## Automatic upgrade with rollback
+
+![Automatic upgrade with rollback](doc/architecture/auto-update.svg)
+
+The `auto-update` script does these steps:
+
+1. It runs `apk update`. If there are no new packages, it stops.
+2. It makes a snapshot of `rpool/ROOT` with `zfs-autobackup`.
+3. It runs `apk upgrade`.
+4. If the upgrade is successful, it runs `quick-reboot`.
+5. If the upgrade fails, it rolls back `rpool/ROOT` to the latest snapshot. It then runs `quick-reboot force`.
+
+**NOTE: The rollback applies only to `rpool/ROOT`. Docker images, volumes and other datasets are not rolled back.**
+
+If the new kernel does not boot, use ZFSBootMenu to boot the latest `system_upgrade-...` snapshot.
+
+## Post-install scripts
+
+Each script in /root/alpinebox runs the scripts that it needs. Thus, run only the script at the top that you need:
+
+```
+install-portainer-stack
+├─ install-portainer          (downloads Hostbox)
+│  └─ install-docker
+│     └─ install-docker-zfs-plugin
+├─ install-zfs-autobackup     (daily snapshots)
+└─ install-firewall           (iptables and ipset)
+```

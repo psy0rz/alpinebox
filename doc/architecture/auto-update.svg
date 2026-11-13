@@ -1,0 +1,102 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="230" viewBox="0 0 960 230" role="img" aria-label="auto-update runs apk update. If there are updates, it snapshots rpool/ROOT, runs apk upgrade, and quick-reboots on success. On failure it rolls rpool/ROOT back to the latest snapshot and force quick-reboots.">
+  <style>
+text { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif; }
+.t { font-size: 13px; font-weight: 600; }
+.s { font-size: 11.5px; }
+.m { font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace; font-size: 12px; font-weight: 500; }
+.lane { font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace; font-size: 11px; letter-spacing: .08em; }
+.lbl, .lbl-acc { font-size: 11px; font-style: italic; }
+.chip-t { font-size: 11.5px; font-weight: 500; }
+.b, .b-plain { stroke-width: 1.25; }
+.b-acc, .b-fail, .b-ok { stroke-width: 1.5; }
+.chip, .chip-acc { stroke-width: 1; }
+.a, .a-fail { fill: none; stroke-width: 1.5; }
+.a-acc { fill: none; stroke-width: 1.75; }
+.dash { stroke-dasharray: 4 4; }
+.bg { fill: #F2F7FB; }
+text { fill: #12233A; }
+.s, .lane, .lbl { fill: #4A6380; }
+.lbl-acc { fill: #2F7FB0; }
+.b, .chip { fill: #FFFFFF; stroke: #B9CEDF; }
+.b-plain { fill: #F2F7FB; stroke: #B9CEDF; }
+.b-acc, .chip-acc { fill: #DCEDF8; stroke: #2F7FB0; }
+.b-fail { fill: #FBE7E1; stroke: #B5482F; }
+.b-ok { fill: #DFF2E8; stroke: #2E7D5B; }
+.a { stroke: #4A6380; }
+.a-acc { stroke: #2F7FB0; }
+.a-fail { stroke: #B5482F; }
+.ah { fill: #4A6380; }
+.ah-acc { fill: #2F7FB0; }
+.ah-fail { fill: #B5482F; }
+@media (prefers-color-scheme: dark) {
+  .bg { fill: #0E1B2C; }
+  text { fill: #D9E8F3; }
+  .s, .lane, .lbl { fill: #8FA9C2; }
+  .lbl-acc { fill: #7CC4E8; }
+  .b, .chip { fill: #15263C; stroke: #2D4866; }
+  .b-plain { fill: #0E1B2C; stroke: #2D4866; }
+  .b-acc, .chip-acc { fill: #1A3A55; stroke: #7CC4E8; }
+  .b-fail { fill: #3D2320; stroke: #F08A6C; }
+  .b-ok { fill: #173528; stroke: #6CC79A; }
+  .a { stroke: #8FA9C2; }
+  .a-acc { stroke: #7CC4E8; }
+  .a-fail { stroke: #F08A6C; }
+  .ah { fill: #8FA9C2; }
+  .ah-acc { fill: #7CC4E8; }
+  .ah-fail { fill: #F08A6C; }
+}
+</style>
+  <rect class="bg" x="0" y="0" width="960" height="230" rx="6"/>
+          <defs>
+            <marker id="m4" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ah" d="M0,0 L10,5 L0,10 z"/></marker>
+            <marker id="m4f" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ah-fail" d="M0,0 L10,5 L0,10 z"/></marker>
+          </defs>
+
+          <rect class="b" x="20" y="40" width="130" height="60" rx="4"/>
+          <text class="t" x="85" y="65" text-anchor="middle">crontab entry</text>
+          <text class="s" x="85" y="84" text-anchor="middle">e.g. Sun 04:00</text>
+
+          <rect class="b" x="185" y="40" width="120" height="60" rx="4"/>
+          <text class="m" x="245" y="65" text-anchor="middle">apk update</text>
+          <text class="s" x="245" y="84" text-anchor="middle">fetch index</text>
+
+          <polygon class="b" points="385,36 430,70 385,104 340,70"/>
+          <text class="t" x="385" y="74" text-anchor="middle">updates?</text>
+
+          <rect class="b" x="465" y="40" width="170" height="60" rx="4"/>
+          <text class="t" x="550" y="65" text-anchor="middle">Snapshot rpool/ROOT</text>
+          <text class="s" x="550" y="84" text-anchor="middle">zfs-autobackup, keep 3 + 1d3d</text>
+
+          <rect class="b" x="670" y="40" width="120" height="60" rx="4"/>
+          <text class="m" x="730" y="65" text-anchor="middle">apk upgrade</text>
+          <text class="s" x="730" y="84" text-anchor="middle">-a, then -as</text>
+
+          <rect class="b-ok" x="820" y="40" width="120" height="60" rx="4"/>
+          <text class="m" x="880" y="65" text-anchor="middle">quick-reboot</text>
+          <text class="s" x="880" y="84" text-anchor="middle">openrc single → kexec</text>
+
+          <line class="a" x1="150" y1="70" x2="183" y2="70" marker-end="url(#m4)"/>
+          <line class="a" x1="305" y1="70" x2="338" y2="70" marker-end="url(#m4)"/>
+          <line class="a" x1="430" y1="70" x2="463" y2="70" marker-end="url(#m4)"/>
+          <text class="lbl" x="447" y="62" text-anchor="middle">yes</text>
+          <line class="a" x1="635" y1="70" x2="668" y2="70" marker-end="url(#m4)"/>
+          <line class="a" x1="790" y1="70" x2="818" y2="70" marker-end="url(#m4)"/>
+          <text class="lbl" x="804" y="62" text-anchor="middle">ok</text>
+
+          <line class="a" x1="385" y1="104" x2="385" y2="158" marker-end="url(#m4)"/>
+          <text class="lbl" x="392" y="134">no</text>
+          <rect class="b-plain" x="325" y="160" width="120" height="50" rx="4"/>
+          <text class="t" x="385" y="182" text-anchor="middle">Exit</text>
+          <text class="s" x="385" y="199" text-anchor="middle">nothing to do</text>
+
+          <line class="a-fail" x1="730" y1="100" x2="730" y2="158" marker-end="url(#m4f)"/>
+          <text class="lbl" x="737" y="134">fails</text>
+          <rect class="b-fail" x="660" y="160" width="140" height="50" rx="4"/>
+          <text class="m" x="730" y="182" text-anchor="middle">zfs rollback</text>
+          <text class="s" x="730" y="199" text-anchor="middle">latest ROOT snapshot</text>
+
+          <line class="a-fail" x1="800" y1="185" x2="818" y2="185" marker-end="url(#m4f)"/>
+          <rect class="b" x="820" y="160" width="120" height="50" rx="4"/>
+          <text class="m" x="880" y="182" text-anchor="middle">quick-reboot</text>
+          <text class="s" x="880" y="199" text-anchor="middle">force: no single mode</text>
+        </svg>

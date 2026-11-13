@@ -1,0 +1,106 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="270" viewBox="0 0 960 270" role="img" aria-label="A GitHub release triggers a privileged Alpine container that runs install steps 1 to 7 on a loop device and uploads alpine.img.gz. On the target server, installimage.sh downloads that image and streams it onto the disk.">
+  <style>
+text { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif; }
+.t { font-size: 13px; font-weight: 600; }
+.s { font-size: 11.5px; }
+.m { font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace; font-size: 12px; font-weight: 500; }
+.lane { font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace; font-size: 11px; letter-spacing: .08em; }
+.lbl, .lbl-acc { font-size: 11px; font-style: italic; }
+.chip-t { font-size: 11.5px; font-weight: 500; }
+.b, .b-plain { stroke-width: 1.25; }
+.b-acc, .b-fail, .b-ok { stroke-width: 1.5; }
+.chip, .chip-acc { stroke-width: 1; }
+.a, .a-fail { fill: none; stroke-width: 1.5; }
+.a-acc { fill: none; stroke-width: 1.75; }
+.dash { stroke-dasharray: 4 4; }
+.bg { fill: #F2F7FB; }
+text { fill: #12233A; }
+.s, .lane, .lbl { fill: #4A6380; }
+.lbl-acc { fill: #2F7FB0; }
+.b, .chip { fill: #FFFFFF; stroke: #B9CEDF; }
+.b-plain { fill: #F2F7FB; stroke: #B9CEDF; }
+.b-acc, .chip-acc { fill: #DCEDF8; stroke: #2F7FB0; }
+.b-fail { fill: #FBE7E1; stroke: #B5482F; }
+.b-ok { fill: #DFF2E8; stroke: #2E7D5B; }
+.a { stroke: #4A6380; }
+.a-acc { stroke: #2F7FB0; }
+.a-fail { stroke: #B5482F; }
+.ah { fill: #4A6380; }
+.ah-acc { fill: #2F7FB0; }
+.ah-fail { fill: #B5482F; }
+@media (prefers-color-scheme: dark) {
+  .bg { fill: #0E1B2C; }
+  text { fill: #D9E8F3; }
+  .s, .lane, .lbl { fill: #8FA9C2; }
+  .lbl-acc { fill: #7CC4E8; }
+  .b, .chip { fill: #15263C; stroke: #2D4866; }
+  .b-plain { fill: #0E1B2C; stroke: #2D4866; }
+  .b-acc, .chip-acc { fill: #1A3A55; stroke: #7CC4E8; }
+  .b-fail { fill: #3D2320; stroke: #F08A6C; }
+  .b-ok { fill: #173528; stroke: #6CC79A; }
+  .a { stroke: #8FA9C2; }
+  .a-acc { stroke: #7CC4E8; }
+  .a-fail { stroke: #F08A6C; }
+  .ah { fill: #8FA9C2; }
+  .ah-acc { fill: #7CC4E8; }
+  .ah-fail { fill: #F08A6C; }
+}
+</style>
+  <rect class="bg" x="0" y="0" width="960" height="270" rx="6"/>
+          <defs>
+            <marker id="m1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ah" d="M0,0 L10,5 L0,10 z"/></marker>
+            <marker id="m1a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ah-acc" d="M0,0 L10,5 L0,10 z"/></marker>
+          </defs>
+          <text class="lane" x="20" y="26">BUILD · GITHUB ACTIONS (release.yml)</text>
+
+          <rect class="b" x="20" y="40" width="190" height="64" rx="4"/>
+          <text class="t" x="115" y="67" text-anchor="middle">Release created</text>
+          <text class="s" x="115" y="86" text-anchor="middle">on GitHub</text>
+
+          <rect class="b" x="263" y="40" width="190" height="64" rx="4"/>
+          <text class="m" x="358" y="67" text-anchor="middle">docker/build.sh</text>
+          <text class="s" x="358" y="86" text-anchor="middle">alpine:3.24, --privileged</text>
+
+          <rect class="b" x="506" y="40" width="190" height="64" rx="4"/>
+          <text class="m" x="601" y="67" text-anchor="middle">createimage.sh</text>
+          <text class="s" x="601" y="86" text-anchor="middle">3 GB loop dev → install/1–7</text>
+
+          <rect class="b-acc" x="750" y="40" width="190" height="64" rx="4"/>
+          <text class="m" x="845" y="67" text-anchor="middle">alpine.img.gz</text>
+          <text class="s" x="845" y="86" text-anchor="middle">release asset</text>
+
+          <line class="a" x1="210" y1="72" x2="261" y2="72" marker-end="url(#m1)"/>
+          <text class="lbl" x="236" y="64" text-anchor="middle">runs</text>
+          <line class="a" x1="453" y1="72" x2="504" y2="72" marker-end="url(#m1)"/>
+          <text class="lbl" x="479" y="64" text-anchor="middle">runs</text>
+          <line class="a" x1="696" y1="72" x2="748" y2="72" marker-end="url(#m1)"/>
+          <text class="lbl" x="722" y="64" text-anchor="middle">gzip</text>
+
+          <path class="a-acc" d="M845,104 V140 H358 V188" marker-end="url(#m1a)"/>
+          <text class="lbl-acc" x="601" y="133" text-anchor="middle">downloads latest (or a tagged) release</text>
+
+          <text class="lane" x="20" y="176">INSTALL · TARGET SERVER</text>
+
+          <rect class="b" x="20" y="190" width="190" height="64" rx="4"/>
+          <text class="t" x="115" y="217" text-anchor="middle">Rescue / live Linux</text>
+          <text class="s" x="115" y="236" text-anchor="middle">any distro, BIOS or UEFI</text>
+
+          <rect class="b-acc" x="263" y="190" width="190" height="64" rx="4"/>
+          <text class="m" x="358" y="217" text-anchor="middle">installimage.sh</text>
+          <text class="s" x="358" y="236" text-anchor="middle">wget … | gunzip &gt; /dev/sdX</text>
+
+          <rect class="b" x="506" y="190" width="190" height="64" rx="4"/>
+          <text class="t" x="601" y="217" text-anchor="middle">Reboot</text>
+          <text class="s" x="601" y="236" text-anchor="middle">power cycle on some VPSes</text>
+
+          <rect class="b" x="750" y="190" width="190" height="64" rx="4"/>
+          <text class="m" x="845" y="217" text-anchor="middle">grow-disks</text>
+          <text class="s" x="845" y="236" text-anchor="middle">expand p4 + rpool to disk</text>
+
+          <line class="a" x1="210" y1="222" x2="261" y2="222" marker-end="url(#m1)"/>
+          <text class="lbl" x="236" y="214" text-anchor="middle">runs</text>
+          <line class="a" x1="453" y1="222" x2="504" y2="222" marker-end="url(#m1)"/>
+          <text class="lbl" x="479" y="214" text-anchor="middle">then</text>
+          <line class="a" x1="696" y1="222" x2="748" y2="222" marker-end="url(#m1)"/>
+          <text class="lbl" x="722" y="214" text-anchor="middle">first</text>
+        </svg>

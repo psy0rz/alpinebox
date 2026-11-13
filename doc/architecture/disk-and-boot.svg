@@ -1,0 +1,120 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="360" viewBox="0 0 960 360" role="img" aria-label="The GPT disk has an MBR, a 1 MB BIOS boot partition, a 256 MB EFI partition, 1 GB swap and the rpool ZFS partition. Both legacy BIOS and UEFI load ZFSBootMenu from the EFI partition, which then kexecs the Alpine kernel from rpool/ROOT. quick-reboot uses kexec to skip firmware and ZFSBootMenu.">
+  <style>
+text { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif; }
+.t { font-size: 13px; font-weight: 600; }
+.s { font-size: 11.5px; }
+.m { font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace; font-size: 12px; font-weight: 500; }
+.lane { font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace; font-size: 11px; letter-spacing: .08em; }
+.lbl, .lbl-acc { font-size: 11px; font-style: italic; }
+.chip-t { font-size: 11.5px; font-weight: 500; }
+.b, .b-plain { stroke-width: 1.25; }
+.b-acc, .b-fail, .b-ok { stroke-width: 1.5; }
+.chip, .chip-acc { stroke-width: 1; }
+.a, .a-fail { fill: none; stroke-width: 1.5; }
+.a-acc { fill: none; stroke-width: 1.75; }
+.dash { stroke-dasharray: 4 4; }
+.bg { fill: #F2F7FB; }
+text { fill: #12233A; }
+.s, .lane, .lbl { fill: #4A6380; }
+.lbl-acc { fill: #2F7FB0; }
+.b, .chip { fill: #FFFFFF; stroke: #B9CEDF; }
+.b-plain { fill: #F2F7FB; stroke: #B9CEDF; }
+.b-acc, .chip-acc { fill: #DCEDF8; stroke: #2F7FB0; }
+.b-fail { fill: #FBE7E1; stroke: #B5482F; }
+.b-ok { fill: #DFF2E8; stroke: #2E7D5B; }
+.a { stroke: #4A6380; }
+.a-acc { stroke: #2F7FB0; }
+.a-fail { stroke: #B5482F; }
+.ah { fill: #4A6380; }
+.ah-acc { fill: #2F7FB0; }
+.ah-fail { fill: #B5482F; }
+@media (prefers-color-scheme: dark) {
+  .bg { fill: #0E1B2C; }
+  text { fill: #D9E8F3; }
+  .s, .lane, .lbl { fill: #8FA9C2; }
+  .lbl-acc { fill: #7CC4E8; }
+  .b, .chip { fill: #15263C; stroke: #2D4866; }
+  .b-plain { fill: #0E1B2C; stroke: #2D4866; }
+  .b-acc, .chip-acc { fill: #1A3A55; stroke: #7CC4E8; }
+  .b-fail { fill: #3D2320; stroke: #F08A6C; }
+  .b-ok { fill: #173528; stroke: #6CC79A; }
+  .a { stroke: #8FA9C2; }
+  .a-acc { stroke: #7CC4E8; }
+  .a-fail { stroke: #F08A6C; }
+  .ah { fill: #8FA9C2; }
+  .ah-acc { fill: #7CC4E8; }
+  .ah-fail { fill: #F08A6C; }
+}
+</style>
+  <rect class="bg" x="0" y="0" width="960" height="360" rx="6"/>
+          <defs>
+            <marker id="m2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ah" d="M0,0 L10,5 L0,10 z"/></marker>
+            <marker id="m2a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ah-acc" d="M0,0 L10,5 L0,10 z"/></marker>
+          </defs>
+          <text class="lane" x="20" y="24">DISK /dev/sdX · GPT · WIDTHS NOT TO SCALE</text>
+
+          <rect class="b-plain" x="20" y="36" width="60" height="60"/>
+          <text class="t" x="50" y="62" text-anchor="middle">MBR</text>
+          <text class="s" x="50" y="80" text-anchor="middle">gptmbr</text>
+
+          <rect class="b-plain" x="80" y="36" width="110" height="60"/>
+          <text class="t" x="135" y="62" text-anchor="middle">p1 · 1 MB</text>
+          <text class="s" x="135" y="80" text-anchor="middle">BIOS boot EF02</text>
+
+          <rect class="b-acc" x="190" y="36" width="240" height="60"/>
+          <text class="t" x="310" y="62" text-anchor="middle">p2 · 256 MB · vfat ESP</text>
+          <text class="s" x="310" y="80" text-anchor="middle">ZFSBootMenu EFI + syslinux</text>
+
+          <rect class="b-plain" x="430" y="36" width="110" height="60"/>
+          <text class="t" x="485" y="62" text-anchor="middle">p3 · 1 GB</text>
+          <text class="s" x="485" y="80" text-anchor="middle">swap</text>
+
+          <rect class="b-plain" x="540" y="36" width="400" height="60"/>
+          <text class="t" x="740" y="62" text-anchor="middle">p4 · rest of disk</text>
+          <text class="s" x="740" y="80" text-anchor="middle">ZFS pool rpool (ashift 12, compression on)</text>
+
+          <text class="lane" x="20" y="144">BOOT</text>
+
+          <rect class="b" x="20" y="160" width="150" height="52" rx="4"/>
+          <text class="t" x="95" y="182" text-anchor="middle">Legacy BIOS</text>
+          <text class="s" x="95" y="199" text-anchor="middle">reads MBR</text>
+
+          <rect class="b" x="20" y="250" width="150" height="52" rx="4"/>
+          <text class="t" x="95" y="272" text-anchor="middle">UEFI firmware</text>
+          <text class="s" x="95" y="289" text-anchor="middle">reads ESP</text>
+
+          <rect class="b" x="220" y="160" width="200" height="52" rx="4"/>
+          <text class="m" x="320" y="182" text-anchor="middle">extlinux</text>
+          <text class="s" x="320" y="199" text-anchor="middle">p2:/syslinux chainloads ZBM</text>
+
+          <rect class="b" x="220" y="250" width="200" height="52" rx="4"/>
+          <text class="m" x="320" y="272" text-anchor="middle">BOOTX64.EFI</text>
+          <text class="s" x="320" y="289" text-anchor="middle">p2:/EFI/BOOT is ZBM itself</text>
+
+          <line class="a" x1="170" y1="186" x2="218" y2="186" marker-end="url(#m2)"/>
+          <line class="a" x1="170" y1="276" x2="218" y2="276" marker-end="url(#m2)"/>
+
+          <line class="a dash" x1="320" y1="96" x2="320" y2="158" marker-end="url(#m2)"/>
+          <text class="lbl" x="327" y="132">files on p2</text>
+
+          <path class="a" d="M420,186 H448 V231"/>
+          <path class="a" d="M420,276 H448 V231 H478" marker-end="url(#m2)"/>
+
+          <rect class="b-acc" x="480" y="205" width="190" height="52" rx="4"/>
+          <text class="t" x="575" y="227" text-anchor="middle">ZFSBootMenu</text>
+          <text class="s" x="575" y="244" text-anchor="middle">boot ROOT or a snapshot</text>
+
+          <line class="a" x1="670" y1="231" x2="728" y2="231" marker-end="url(#m2)"/>
+          <text class="lbl" x="699" y="223" text-anchor="middle">kexec</text>
+
+          <rect class="b" x="730" y="205" width="210" height="52" rx="4"/>
+          <text class="t" x="835" y="227" text-anchor="middle">Alpine Linux</text>
+          <text class="s" x="835" y="244" text-anchor="middle">linux-lts from /boot in ROOT</text>
+
+          <line class="a dash" x1="835" y1="96" x2="835" y2="203" marker-end="url(#m2)"/>
+          <text class="lbl" x="842" y="150">bootfs = rpool/ROOT</text>
+
+          <path class="a-acc dash" d="M905,257 V312 H765 V259" marker-end="url(#m2a)"/>
+          <text class="lbl-acc" x="835" y="332" text-anchor="middle">quick-reboot: kexec straight into the new kernel,</text>
+          <text class="lbl-acc" x="835" y="347" text-anchor="middle">skips firmware and ZFSBootMenu</text>
+        </svg>
