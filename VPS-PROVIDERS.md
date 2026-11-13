@@ -19,7 +19,7 @@ Use one of these procedures for a Hetzner dedicated server.
 3. Get access to the installed system:
    * `zpool import -R /mnt rpool` (The first time, this command installs the ZFS tools automatically.)
    * `chroot /mnt`
-4. Set the root password or add SSH keys.
+4. Add your public SSH key to `/root/.ssh/authorized_keys`. A root password does not give SSH access. Refer to [Login](README.md#login).
 5. Exit and reboot.
 
 ### Method 2: Hetzner vKVM
@@ -32,7 +32,7 @@ This method starts your hard disks as a QEMU VM with VNC access. This method is 
 4. Do the [installation procedure](README.md#installing). Do not reboot.
 5. Start vKVM: `systemctl start vkvm-startup`
 6. The server boots. You can access it with the web interface at `https://x.x.x.x:47773/`. The Hetzner control panel shows this address.
-7. Log in. Add SSH keys or set the root password.
+7. Log in as root. There is no password. Add your public SSH key to `/root/.ssh/authorized_keys`. A root password does not give SSH access.
 8. Reboot the rescue shell. The server then boots from its own disk.
 
 #### UEFI boot problems in vKVM

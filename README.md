@@ -64,7 +64,19 @@ If you have problems during the installation, refer to [VPS provider tips](VPS-P
 
 ## Login
 
-Console logins do not have a root password. For SSH logins, you must add your keys.
+Console logins do not have a root password.
+
+SSH password logins are disabled. Thus, a root password does not give SSH access. To log in with SSH, add your public key to `/root/.ssh/authorized_keys`. This file exists, but it is empty after the installation.
+
+To add your key, do one of these procedures:
+
+* Log in on the console and add the key to `/root/.ssh/authorized_keys`.
+* Before you reboot after the installation, import the pool from the rescue system and add the key:
+  ```
+  # zpool import -R /mnt rpool
+  # cat my-key.pub >> /mnt/root/.ssh/authorized_keys
+  # zpool export rpool
+  ```
 
 ## Growing the disk
 
@@ -197,9 +209,27 @@ For more information, for example two-factor login, CrowdSec and the maintenance
 
 Go to /root/alpinebox and run `./install-firewall`.
 
-This script installs a minimal firewall. The firewall accepts SSH connections only from trusted IP addresses. You set these addresses with ipsets in /etc/ipset.d/.
+This script installs a minimal firewall. The firewall accepts SSH connections only from trusted IP addresses. These addresses are in the ipsets `admins-ipv4` and `admins-ipv6`. The firewall does not interfere with Docker.
 
-The firewall does not interfere with Docker. When the script is complete, it shows more information.
+**CAUTION: THE FIREWALL STARTS AFTER THE NEXT REBOOT. IF YOUR IP ADDRESS IS NOT IN THE IPSET THEN, YOU CANNOT LOG IN WITH SSH.**
+
+After the script is complete, do these steps:
+
+1. Add your IP address or network to the ipset:
+   ```
+   # ipset add admins-ipv4 192.168.13.0/24
+   ```
+   For IPv6 addresses, use `admins-ipv6`.
+2. Save the ipsets to disk:
+   ```
+   # /etc/init.d/ipset save
+   ```
+   The ipsets are saved in /etc/ipset.d/. They load again at boot.
+3. Reboot once to start the firewall.
+
+To add more addresses later, do steps 1 and 2 again. You do not have to reboot.
+
+**CAUTION: DO NOT RESTART IPTABLES AFTER DOCKER HAS STARTED. A RESTART REMOVES THE IPTABLES RULES OF DOCKER.**
 
 # Architecture
 
