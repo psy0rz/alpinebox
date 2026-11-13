@@ -5,7 +5,7 @@ set -e
 # dependencies
 ./install-docker
 
-echo "ALPINEBOX: Installing Portainer"
+echo "ALPINEBOX: Installing Hostbox (Portainer core stack)"
 
 if [ ! -e /root/portainer-templates ]; then
     git clone https://github.com/psy0rz/portainer-templates.git /root/portainer-templates
@@ -16,16 +16,11 @@ if ! [ -e .env ]; then
     cp .env-example .env
 fi
 
-if ! [ -e certs.yml ]; then
-    cp certs.yml.example certs.yml
-fi
-
-
-docker compose up -d 
-
 echo
-echo "ALPINEBOX: Portainer installed"
+echo "ALPINEBOX: Hostbox downloaded to /root/portainer-templates"
 echo
-echo "ALPINEBOX: Please go to /root/portainer-templates/core/, edit ths .env file  and use 'docker compose up -d' to finish the setup"
-echo "ALPINEBOX: Login to portainer with admin/admin, set this as the template URL: https://raw.githubusercontent.com/psy0rz/portainer-templates/main/templates.json"
-
+echo "ALPINEBOX: To finish the setup:"
+echo "ALPINEBOX:   1. Go to /root/portainer-templates/core/"
+echo "ALPINEBOX:   2. Edit the .env file. Set DOMAIN and the Let's Encrypt or ZeroSSL settings."
+echo "ALPINEBOX:   3. Run ./setup.sh and type the admin password."
+echo "ALPINEBOX:   4. Log in at https://<DOMAIN>/server-manager/ as admin."
