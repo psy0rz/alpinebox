@@ -2,9 +2,7 @@
 
 **Climb high, roll back safely.**
 
-This is an installer for [Alpine Linux](https://www.alpinelinux.org/) with ZFS as root filesystem, and [ZFSBootMenu](https://docs.zfsbootmenu.org/) to boot into different environments.
-
-Since installing Alpine with ZFS and ZFSBootMenu needs a whole tutorial with many steps, we've created this easy installer.
+This is an quick-installer for [Alpine Linux](https://www.alpinelinux.org/) with ZFS as root filesystem, and [ZFSBootMenu](https://docs.zfsbootmenu.org/) to boot into different environments.
 
 * Fastest and easiest way to install Alpine on ZFS.
 * Uses the excellent [ZFS](https://openzfs.org/wiki/Main_Page) filesystem.
@@ -36,7 +34,11 @@ For this reason all our boxes run Alpine and just auto-upgrade and reboot every 
 
 # Installing
 
-The easiest procedure is to write the official image to the disk.
+To install Alpinebox, you write a ready-made disk image to the disk of the system. You do this from a Linux environment that you boot from a different medium, for example a live USB drive or the rescue system of a VPS provider.
+
+The image is a complete Alpinebox system. It contains Alpine Linux, the ZFS root pool and ZFSBootMenu. The imager script downloads the latest release from [GitHub](https://github.com/psy0rz/alpinebox/releases) and writes it directly to the disk. You do not have to partition the disk or configure the system.
+
+**CAUTION: THE IMAGER DELETES ALL DATA ON THE DISK THAT YOU SPECIFY.**
 
 1. Boot a Linux distribution from a CD or a USB drive. If you use a VPS provider, use its rescue boot. Refer to [VPS provider tips](#vps-provider-tips).
 
