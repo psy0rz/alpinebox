@@ -58,6 +58,11 @@ The image is a complete Alpinebox system. It contains Alpine Linux, the ZFS root
    ```
    The imager downloads the image and writes it to the disk. The installation is then complete.
 
+   The imager installs the latest release. To install a different release, specify the release tag from the [releases page](https://github.com/psy0rz/alpinebox/releases):
+   ```
+   # bash image /dev/sda <release>
+   ```
+
 4. Reboot the system. Some VPS providers need a power cycle.
 
 If you have problems during the installation, refer to [VPS provider tips](VPS-PROVIDERS.md).
@@ -94,9 +99,40 @@ The script also partitions the disk and installs MBR, UEFI and ZFSBootMenu on it
 
 Before you add the disk, remove all disks that are not ONLINE from the pool.
 
+## Prompt colour
+
+The colour of the shell prompt shows the role of the server. You set the role with `DTAP_ROLE` in `/etc/profile.d/z_dtap-prompt.sh`:
+
+| `DTAP_ROLE`       | Colour |
+|-------------------|--------|
+| `dev`             | Green  |
+| `test`            | Yellow |
+| `acc`             | Yellow |
+| `prod` (default)  | Red    |
+
+The change applies at the next login.
+
+## GPU drivers
+
+The installer blocks the common GPU drivers (radeon, amdgpu, nouveau, nvidia, i915 and drm), because they cause boot problems on older hardware. The list is in `/etc/modprobe.d/blacklist-gpu.conf`.
+
+If you need a GPU, for example for video transcoding in a container, remove the driver from this file and reboot.
+
 ## Backups
 
-To make backups with ZFS replication, use my other project: [zfs-autobackup](https://github.com/psy0rz/zfs_autobackup).
+Alpinebox uses my other project, [zfs-autobackup](https://github.com/psy0rz/zfs_autobackup), for snapshots and backups with ZFS replication.
+
+To install it, run `./install-zfs-autobackup` in /root/alpinebox. The `install-portainer-stack` script also runs this script. The script does these steps:
+
+1. It installs zfs-autobackup with pipx in `/root/.local/bin`.
+2. It sets the property `autobackup:backup=true` on `rpool`. All datasets get this property, except `rpool/var/lib/docker/images`.
+3. It adds the daily job `/etc/periodic/daily/zfs-autobackup`. This job makes a snapshot of the selected datasets each day.
+
+The daily job makes only local snapshots. To copy the snapshots to a backup server, run zfs-autobackup on the backup server in pull mode. For example:
+```
+# zfs-autobackup -v --ssh-source <alpinebox-host> backup <target-dataset>
+```
+The backup server must have SSH access to the Alpinebox as root. Refer to the [zfs-autobackup documentation](https://github.com/psy0rz/zfs_autobackup) for more information.
 
 ## Updates
 
@@ -152,6 +188,14 @@ You can also use `quick-reboot` manually:
 # apk add kexec-tools
 ```
 
+## Updating the Alpinebox scripts
+
+/root/alpinebox is a git clone of this repository. To get the latest scripts, run these commands:
+```
+# cd /root/alpinebox
+# git pull origin master
+```
+
 # Installing Docker or Hostbox
 
 After you install Alpinebox, go to /root/alpinebox. This directory contains these install scripts:
@@ -161,6 +205,17 @@ After you install Alpinebox, go to /root/alpinebox. This directory contains thes
 * `./install-portainer-stack`: Installs Docker, Hostbox, zfs-autobackup and the [firewall](#installing-the-firewall).
 
 When the script is complete, it shows the subsequent steps.
+
+## Docker settings
+
+The `install-docker` script configures Docker with these settings:
+
+* **Images**: Docker uses the ZFS storage driver. The images are in `rpool/var/lib/docker/images`. This dataset is not backed up.
+* **Volumes**: The Docker ZFS volume plugin creates a ZFS dataset for each volume in `rpool/var/lib/docker/volumes`. Thus, you can snapshot, back up and move each volume separately. The volumes have atime off.
+* **Logs**: Each container keeps a maximum of 2 log files of 1 MB.
+* **Networks**: Docker networks get a /24 subnet from `172.19.0.0/16`. If your LAN or VPN uses addresses in this range, change `default-address-pools` in `/etc/docker/daemon.json`.
+* **DNS**: Containers use `ndots:1`.
+* **sysctl**: `/etc/sysctl.d/docker.conf` sets `vm.max_map_count=1024000` for Elasticsearch and OpenSearch, and `fs.inotify.max_user_instances=1024`.
 
 ## Hostbox
 
@@ -246,9 +301,9 @@ When a release is created on GitHub, GitHub Actions builds the disk image:
 3. `createimage.sh` runs the install scripts `install/1-prepare.sh` to `install/7-cleanup.sh` on the loop device. Step 7 makes the snapshot `rpool/ROOT@fresh-install`.
 4. The workflow compresses the image and uploads it as the release asset `alpine.img.gz`.
 
-On the target server, `installimage.sh` downloads this image and writes it directly to the disk. Thus, every server gets the same tested image.
+To test an image locally, run `devtools/runimage.sh <image>`. This script boots the image in QEMU. The default image is `/tmp/alpine.img`.
 
-The older procedure, `install/bootstrap.sh` from an Alpine ISO, runs the same seven install scripts directly on the disk of the server.
+On the target server, `installimage.sh` downloads this image and writes it directly to the disk. Thus, every server gets the same tested image.
 
 ## Disk layout and boot chain
 
@@ -280,7 +335,7 @@ The `add-disk` script does the partitioning and the boot loader installation aga
 
 A server with Hostbox has these layers, from bottom to top:
 
-1. **rpool**: The ZFS pool on p4. `zfs-autobackup` makes a snapshot of all datasets each day.
+1. **rpool**: The ZFS pool on p4. `zfs-autobackup` makes a snapshot of all datasets each day (if you installed it, refer to [Backups](#backups)).
 2. **Alpine Linux**: OpenRC starts the system services, for example sshd, iptables, crond and chronyd.
 3. **Docker**: Docker uses the ZFS storage driver for images. The Docker ZFS volume plugin creates a ZFS dataset for each volume.
 4. **Hostbox core stack**: Traefik, Authelia, CrowdSec, Portainer, VictoriaLogs, Watchtower and the portal.
