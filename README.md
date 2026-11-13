@@ -188,6 +188,14 @@ You can also use `quick-reboot` manually:
 # apk add kexec-tools
 ```
 
+### Upgrading to a new Alpine release
+
+The `auto-update` script installs the updates of the Alpine release in `/etc/apk/repositories`, for example 3.23. To move to a new release, for example 3.24, change the release in this file. The `auto-update` script then does the upgrade, with the snapshot and the rollback.
+
+If the system does not boot or does not work correctly, use ZFSBootMenu to roll back to the latest `system_upgrade-...` snapshot.
+
+**CAUTION: DO NOT RUN `zpool upgrade` AFTER THE UPGRADE. ZFSBOOTMENU HAS ITS OWN ZFS VERSION. IF THE POOL USES ZFS FEATURES THAT ZFSBOOTMENU DOES NOT KNOW, THE SYSTEM DOES NOT BOOT.**
+
 ## Updating the Alpinebox scripts
 
 /root/alpinebox is a git clone of this repository. To get the latest scripts, run these commands:
