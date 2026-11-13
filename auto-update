@@ -6,10 +6,26 @@ set -e
 
 
 
+ZFS_AUTOBACKUP=/root/.local/bin/zfs-autobackup
+
+# Same pipx copy as install-zfs-autobackup. Also repairs it when a Python upgrade broke its venv.
+ensure_zfs_autobackup() {
+    if ! $ZFS_AUTOBACKUP --version >/dev/null 2>&1; then
+        apk add pipx
+        pipx install --force zfs-autobackup
+    fi
+}
+
 zfs_snapshot() {
-    apk add py3-zfs-autobackup
+    ensure_zfs_autobackup
     zfs set autobackup:system_upgrade=true rpool/ROOT
-    zfs-autobackup system_upgrade --keep-source=3,1d3d
+    $ZFS_AUTOBACKUP system_upgrade --keep-source=3,1d3d
+}
+
+# Rebuild the venv against the (possibly new) Python, and get the latest zfs-autobackup.
+# Keeps the daily backup job working after an Alpine release upgrade.
+reinstall_zfs_autobackup() {
+    pipx reinstall zfs-autobackup || echo "ALPINEBOX: WARNING: pipx reinstall of zfs-autobackup failed"
 }
 
 zfs_rollback_system() {
@@ -30,8 +46,9 @@ if apk list -u | grep . >/dev/null; then
     zfs_snapshot
 
     # try it:
-    if apk upgrade -a && apk upgrade -as; then
+    if apk upgrade -a; then
         # ok, quick reboot
+        reinstall_zfs_autobackup
         echo "ALPINEBOX: Upgrade OK, rebooting."
         /root/alpinebox/quick-reboot
     else

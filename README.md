@@ -124,7 +124,7 @@ Alpinebox uses my other project, [zfs-autobackup](https://github.com/psy0rz/zfs_
 
 To install it, run `./install-zfs-autobackup` in /root/alpinebox. The `install-portainer-stack` script also runs this script. The script does these steps:
 
-1. It installs zfs-autobackup with pipx in `/root/.local/bin`.
+1. It installs zfs-autobackup with pipx in `/root/.local/bin`. The `auto-update` script uses this same copy, and updates it.
 2. It sets the property `autobackup:backup=true` on `rpool`. All datasets get this property, except `rpool/var/lib/docker/images`.
 3. It adds the daily job `/etc/periodic/daily/zfs-autobackup`. This job makes a snapshot of the selected datasets each day.
 
@@ -145,9 +145,9 @@ If the upgrade fails, use ZFSBootMenu to roll back to the snapshot.
 The `auto-update` script in /root/alpinebox does the upgrade procedure automatically. The script does these steps:
 
 1. It updates the package index. If there are no new packages, the script stops.
-2. It makes a snapshot of rpool/ROOT with [zfs-autobackup](https://github.com/psy0rz/zfs_autobackup). It keeps the 3 latest snapshots, and one snapshot each day for 3 days.
+2. It makes a snapshot of rpool/ROOT with [zfs-autobackup](https://github.com/psy0rz/zfs_autobackup). It keeps the 3 latest snapshots, and one snapshot each day for 3 days. If zfs-autobackup is not installed, or if it does not work, the script installs it with pipx.
 3. It upgrades all packages.
-4. If the upgrade is successful, it does a quick reboot into the new system.
+4. If the upgrade is successful, it reinstalls zfs-autobackup with pipx. This gets the latest version, and makes sure that zfs-autobackup works with a new Python version. The script then does a quick reboot into the new system.
 5. If the upgrade fails, it rolls back rpool/ROOT to the snapshot and does a quick reboot.
 
 **NOTE: The snapshot contains only rpool/ROOT. The script does not roll back other datasets, for example your Docker data.**
