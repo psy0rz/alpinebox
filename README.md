@@ -22,6 +22,8 @@ This is an quick-installer for [Alpine Linux](https://www.alpinelinux.org/) with
 * Also easy to install at VPS providers that do not provide an Alpine installer.
 * Install time is about 1 minute.
 
+To see how it all fits together (image build, disk layout, boot chain, the running server and the automatic upgrades), refer to the diagrams in [Architecture](#architecture).
+
 ## Why Alpine Linux?
 
 Alpine is one of the best and cleanest Linux distros out there, for running Docker and various other stuff. Packages like the Linux kernel, ZFS support and Docker are not only very up to date, but also very stable.
